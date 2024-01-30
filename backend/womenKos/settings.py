@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2rp&1mq9#fkbc+^+7u3&w)9l6%ekxc*dl8=_r)6*!@y@$nboj0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # THIRD-PARTY
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'storages',
+
+     # APPS
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'womenKos.urls'
@@ -99,6 +109,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Django Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+    ],
+     'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+CORS_ORIGIN_WHITELIST = [
+    "http://*",
+    "http://localhost:3000",
+    "http://127.0.0.1:8000"
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
