@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-from womenKos.storage_backends import ImageStorage
+from backend.storage_backends import ImageStorage
 
 from datetime import timedelta
 import django.utils.timezone as timezone

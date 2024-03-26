@@ -1,4 +1,4 @@
-﻿# KOS web application for women built with NextJs and Django
+﻿# KOS aplicación web para mujeres, construída con Django y React  
 ## Cómo configurar y correr el backend de Django
 *Esta guía es para Windows*
 
