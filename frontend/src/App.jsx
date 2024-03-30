@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
+import Cookies from 'js-cookie';
+import Axios from 'axios';
+import Home from './pages/home/Home';
+import Feed from './pages/feed/Feed';
+import Login from './pages/login/Login';
+import { UserProvider } from './contexts/UserContext';
 
-function App() {
-  const [count, setCount] = useState(0)
+const API_URL = import.meta.env.API_URL;
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function PrivateRoute({ element }) {
+  const isAuthenticated = !!Cookies.get('access_token');
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getUser();
+    }
+  }, [isAuthenticated]);
+
+  const getUser = () => {
+    const token = Cookies.get('access_token');
+    if (token) {
+      Axios.get(`${API_URL}/api/get-user/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+        .then((res) => {
+          setUser(res.data.user);
+        })
+        .catch((error) => {
+          console.error('Error fetching user:', error);
+        });
+    }
+  };
+
+  return isAuthenticated ? element : <Navigate to="/login" />;
 }
 
-export default App
+function App() {
+  return (
+    <BrowserRouter>
+      <UserProvider>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          {/* Private route */}
+          <Route
+            path="/feed"
+            element={<PrivateRoute element={<Feed />} />}
+          />
+        </Routes>
+      </UserProvider>
+    </BrowserRouter>
+  );
+}
+
+export default App;
