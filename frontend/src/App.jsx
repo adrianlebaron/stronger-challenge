@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useRouteError } from 'react-router-dom';
 import './App.css';
 import Cookies from 'js-cookie';
 import Axios from 'axios';
@@ -40,6 +40,11 @@ function PrivateRoute({ element }) {
   return isAuthenticated ? element : <Navigate to="/login" />;
 }
 
+function ErrorBoundary() {
+  // Uncaught ReferenceError: path is not defined
+  return <div>Page not found!</div>
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -48,6 +53,7 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path='*' element={<ErrorBoundary/>}/>
           {/* Private route */}
           <Route
             path="/feed"

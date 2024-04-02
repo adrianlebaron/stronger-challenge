@@ -1,19 +1,35 @@
-import { createContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
-export const UserContext = createContext();
+const AuthContext = createContext();
 
-// This context provider is passed to any component requiring the context
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState();
+export const AuthProvider = ({ children }) => {
+    const [token, setToken] = useState('');
 
-  return (
-    <UserContext.Provider
-      value={{
-        user,
-        setUser,
-      }}
-    >
-      {children}
-    </UserContext.Provider>
-  );
+    useEffect(() => {
+        const savedToken = Cookies.get('authToken');
+        if (savedToken) {
+            setToken(savedToken);
+        }
+    }, []);
+
+    const isAuthenticated = () => {
+        return token !== '';
+    };
+
+    useEffect(() => {
+        if (token) {
+            Cookies.set('authToken', token, { expires: 7 });
+        } else {
+            Cookies.remove('authToken');
+        }
+    }, [token]);
+
+    return (
+        <AuthContext.Provider value={{ token, setToken, isAuthenticated }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
+
+export const useAuth = () => useContext(AuthContext);
