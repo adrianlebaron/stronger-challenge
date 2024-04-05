@@ -2,7 +2,6 @@ import { useContext } from "react"
 import { UserContext } from "../contexts/UserContext"
 import { NavLink } from "react-router-dom";
 import Cookies from "js-cookie";
-import PropTypes from 'prop-types';
 
 export default function Navbar(props) {
     const { user } = useContext(UserContext)
@@ -15,46 +14,38 @@ export default function Navbar(props) {
     const loggedOutLinks = () => {
         return (
             <div>
-                <div>
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Home
-                    </NavLink>
-                </div>
-                <div>
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Shop
-                    </NavLink>
-                </div>
-                <div>
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Register
-                    </NavLink>
-                </div>
-                <div>
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Sign In
-                    </NavLink>
-                </div>
+                <NavLink
+                    to="/"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Home
+                </NavLink>
+                <NavLink
+                    to="/shop"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Shop
+                </NavLink>
+                <NavLink
+                    to="/signup"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Signup
+                </NavLink>
+                <NavLink
+                    to="/login"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Login
+                </NavLink>
             </div>
         );
     };
@@ -62,67 +53,54 @@ export default function Navbar(props) {
     const loggedInLinks = () => {
         return (
             <div>
-                <div >
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Home
-                    </NavLink>
-                </div>
-                <div >
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Shop
-                    </NavLink>
-                </div>
-                <div>
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Feed
-                    </NavLink>
-                </div>
-                <div >
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Score
-                    </NavLink>
-                </div>
-                <div >
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Dashboard
-                    </NavLink>
-                </div>
-
-                <div>
-                    <NavLink
-                        to="/"
-                        className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }
-                    >
-                        Profile
-                    </NavLink>
-                </div>
+                <NavLink
+                    to="/"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Home
+                </NavLink>
+                <NavLink
+                    to="/shop"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Shop
+                </NavLink>
+                <NavLink
+                    to="/feed"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Feed
+                </NavLink>
+                <NavLink
+                    to="/score"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Score
+                </NavLink>
+                <NavLink
+                    to="/dashboard"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Dashboard
+                </NavLink>
+                <NavLink
+                    to="/profile"
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }
+                >
+                    Profile
+                </NavLink>
                 {adminLinks()}
                 <button
                     onClick={handleSignOut}
@@ -150,15 +128,9 @@ export default function Navbar(props) {
         }
     };
 
-console.log('PROPS', props)
     return (
         <div>
             {props ? loggedInLinks() : loggedOutLinks()}
-            {console.log('PROPS', props)}
         </div>
     )
 }
-
-// Navbar.propTypes = {
-//     isAuthenticated: PropTypes.bool.isRequired
-//   };

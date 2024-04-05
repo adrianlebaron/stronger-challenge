@@ -1,35 +1,25 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import { createContext, useState } from "react";
+import PropTypes from 'prop-types';
 
-const AuthContext = createContext();
+export const UserContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState('');
+// This context provider is passed to any component requiring the context
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState();
 
-    useEffect(() => {
-        const savedToken = Cookies.get('authToken');
-        if (savedToken) {
-            setToken(savedToken);
-        }
-    }, []);
-
-    const isAuthenticated = () => {
-        return token !== '';
-    };
-
-    useEffect(() => {
-        if (token) {
-            Cookies.set('authToken', token, { expires: 7 });
-        } else {
-            Cookies.remove('authToken');
-        }
-    }, [token]);
-
-    return (
-        <AuthContext.Provider value={{ token, setToken, isAuthenticated }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };
 
-export const useAuth = () => useContext(AuthContext);
+// This is to fix the error of: children' is missing in props validationeslintreact
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
