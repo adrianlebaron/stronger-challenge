@@ -18,15 +18,13 @@ Ya asegurandote que el entorno esta activat, puedes instalar las dependencias de
 
     pip install -r requirements.txt
 
-## Cómo configurar y correr el frontend de Nextjs
+## Cómo configurar y correr el frontend de React hecho con Vite
 1- Primero en tu terminal entra a la carpeta `/frontend`
 
-2- Debes usar una versión de node reciente como la `20.10.0`
-
-3- Aquí instala las dependencias de `node` con:
+2- Aquí instala las dependencias de `node` con:
 
     npm install
 
-4- Corre el servidor localhost:3000 con:
+3- Luego, ejecuta el servidor local, el cual correrá en: `localhost:5173`, con:
 
     npm run dev
