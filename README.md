@@ -25,6 +25,6 @@ Ya asegurandote que el entorno esta activat, puedes instalar las dependencias de
 
     npm install
 
-3- Corre el servidor localhost:5173 con:
+3- Luego, ejecuta el servidor local, el cual correrá en: `localhost:5173`, con:
 
     npm run dev
