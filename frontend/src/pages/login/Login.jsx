@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { login } from '../../services/UserApiRequest';
 import { toast } from 'react-hot-toast';
-import { authStore } from '../../store/Store';
+import { authStore } from '../../stores/auth_store/Store';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const setToken = authStore(store=>store.setToken)
+
+    const navigate = useNavigate();
+    const {token} = authStore((state) => state);
 
     const handleLogin = () => {
         login(username, password)
@@ -24,6 +28,12 @@ export default function LoginPage() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    useEffect(() => {
+        if (token) {
+          navigate("/", { replace: true });
+        }
+      }, [token, navigate]);
 
     return (
         <div>

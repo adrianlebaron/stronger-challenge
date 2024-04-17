@@ -1,9 +1,9 @@
-// import { useContext } from "react"
 import { NavLink } from "react-router-dom";
-import { authStore } from "../store/Store";
+import { authStore } from "../stores/auth_store/Store";
 
-export default function Navbar(props) {
+export default function Navbar() {
     const {setToken, setUser} = authStore(store=>store)
+    const {token} = authStore((state) => state);
 
     const handleSignOut = () => {
         setToken(""),
@@ -14,34 +14,22 @@ export default function Navbar(props) {
         return (
             <div>
                 <NavLink
-                    to="/"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
+                    to="/"               
                 >
                     Home
                 </NavLink>
                 <NavLink
                     to="/shop"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Shop
                 </NavLink>
                 <NavLink
                     to="/signup"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Signup
                 </NavLink>
                 <NavLink
                     to="/login"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Login
                 </NavLink>
@@ -54,49 +42,31 @@ export default function Navbar(props) {
             <div>
                 <NavLink
                     to="/"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Home
                 </NavLink>
                 <NavLink
                     to="/shop"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Shop
                 </NavLink>
                 <NavLink
                     to="/feed"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Feed
                 </NavLink>
                 <NavLink
                     to="/score"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Score
                 </NavLink>
                 <NavLink
                     to="/dashboard"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Dashboard
                 </NavLink>
                 <NavLink
                     to="/profile"
-                    className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }
                 >
                     Profile
                 </NavLink>
@@ -126,7 +96,7 @@ export default function Navbar(props) {
 
     return (
         <div>
-            {props ? loggedInLinks() : loggedOutLinks()}
+            {token ? loggedInLinks() : loggedOutLinks()}
         </div>
     )
 }

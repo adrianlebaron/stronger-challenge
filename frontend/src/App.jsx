@@ -4,7 +4,7 @@ import './App.css';
 import Home from './pages/home/Home';
 import Feed from './pages/feed/Feed';
 import Login from './pages/login/Login';
-import { authStore } from './store/Store.tsx';
+import { authStore } from './stores/auth_store/Store.tsx';
 import { Toaster } from 'react-hot-toast';
 import PrivateRoute from './components/private_route/PrivateRoute';
 import { getUser } from './services/UserApiRequest';
