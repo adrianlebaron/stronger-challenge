@@ -1,14 +1,13 @@
-import { useContext } from "react"
-import { UserContext } from "../contexts/UserContext"
+// import { useContext } from "react"
 import { NavLink } from "react-router-dom";
-import Cookies from "js-cookie";
+import { authStore } from "../store/Store";
 
 export default function Navbar(props) {
-    const { user } = useContext(UserContext)
+    const {setToken, setUser} = authStore(store=>store)
 
     const handleSignOut = () => {
-        Cookies.remove('access_token')
-        window.location.reload()
+        setToken(""),
+        setUser("")
     };
 
     const loggedOutLinks = () => {
@@ -101,12 +100,9 @@ export default function Navbar(props) {
                 >
                     Profile
                 </NavLink>
-                {adminLinks()}
+                {/* {adminLinks()} */}
                 <button
                     onClick={handleSignOut}
-                    style={{
-
-                    }}
                 >
                     Logout
                 </button>
@@ -114,19 +110,19 @@ export default function Navbar(props) {
         )
     }
 
-    const adminLinks = () => {
-        if (user) {
-            if (user.profile.roles === "ADMIN") {
-                return (
-                    <div>
-                        <NavLink exact to="/admin">
-                            Admin
-                        </NavLink>
-                    </div>
-                );
-            }
-        }
-    };
+    // const adminLinks = () => {
+    //     if (user) {
+    //         if (user.profile.roles === "ADMIN") {
+    //             return (
+    //                 <div>
+    //                     <NavLink exact to="/admin">
+    //                         Admin
+    //                     </NavLink>
+    //                 </div>
+    //             );
+    //         }
+    //     }
+    // };
 
     return (
         <div>

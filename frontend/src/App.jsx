@@ -1,10 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.css';
 import Home from './pages/home/Home';
 import Feed from './pages/feed/Feed';
 import Login from './pages/login/Login';
-import { UserProvider } from './contexts/UserContext';
-import PrivateRoute from './utils/PrivateRoute';
+import { authStore } from './store/Store.tsx';
+import { Toaster } from 'react-hot-toast';
+import PrivateRoute from './components/private_route/PrivateRoute';
+import { getUser } from './services/UserApiRequest';
 
 function ErrorBoundary() {
   // Uncaught ReferenceError: path is not defined
@@ -12,21 +15,30 @@ function ErrorBoundary() {
 }
 
 function App() {
+  const {token, setUser}  = authStore((state) => state);
+
+  useEffect(() => {
+    if (token) {
+      getUser()
+        .then((data) => {
+          setUser(data)
+        })
+    }
+  }, [token, setUser]);
+
   return (
     <BrowserRouter>
-      <UserProvider>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path='*' element={<ErrorBoundary/>}/>
-          {/* Private route */}
-          <Route
-            path="/feed"
-            element={<PrivateRoute element={<Feed />} />}
-          />
-        </Routes>
-      </UserProvider>
+      <Toaster />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path='*' element={<ErrorBoundary />} />
+        {/* Private route */}
+        <Route element={<PrivateRoute/>}>
+          <Route path="/feed" element={<Feed />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

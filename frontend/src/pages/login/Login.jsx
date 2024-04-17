@@ -1,36 +1,28 @@
 import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { login } from '../../services/UserApiRequest';
+import { toast } from 'react-hot-toast';
+import { authStore } from '../../store/Store';
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+    const setToken = authStore(store=>store.setToken)
+
+    const handleLogin = () => {
+        login(username, password)
+            .then((token) => {
+                setToken(token)
+                toast.success("Successfully Logged in!🥵")
+            })
+            .catch(() => {
+                toast.error("Login failed. Please try again.");
+            });
+    };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
-    };
-
-    const handleLogin = async () => {
-        try {
-            const response = await axios.post(`${API_URL}/api/login/`, {
-                username,
-                password,
-            });
-            const token = response.data.token;
-            // Store token in cookies
-            Cookies.set('access_token', token);
-            // Redirect user to home page
-            navigate('/');
-        } catch (error) {
-            console.error('Login failed:', error);
-            // Handle login failure, show error message or toast
-        }
     };
 
     return (
