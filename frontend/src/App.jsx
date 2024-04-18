@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import './App.css';
 import Home from './pages/home/Home';
 import Feed from './pages/feed/Feed';
 import Login from './pages/login/Login';
@@ -15,7 +14,7 @@ function ErrorBoundary() {
 }
 
 function App() {
-  const {token, setUser}  = authStore((state) => state);
+  const { token, setUser } = authStore((state) => state);
 
   useEffect(() => {
     if (token) {
@@ -35,7 +34,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path='*' element={<ErrorBoundary />} />
         {/* Private route */}
-        <Route element={<PrivateRoute/>}>
+        <Route element={<PrivateRoute />}>
           <Route path="/feed" element={<Feed />} />
         </Route>
       </Routes>
