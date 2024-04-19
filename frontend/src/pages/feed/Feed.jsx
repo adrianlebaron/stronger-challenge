@@ -1,4 +1,4 @@
-import Navbar from "../../components/Navbar"
+import Navbar from "../../components/PrivateAppBar"
 
 export default function Feed() {
   return (

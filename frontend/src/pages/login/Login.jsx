@@ -4,6 +4,7 @@ import { login } from '../../services/UserApiRequest';
 import { toast } from 'react-hot-toast';
 import { authStore } from '../../stores/auth_store/Store';
 import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +37,7 @@ export default function LoginPage() {
       }, [token, navigate]);
 
     return (
-        <div>
+        <Box style={{paddingTop: '50px'}}>
             <h1>Login</h1>
             <div>
                 <input
@@ -58,6 +59,6 @@ export default function LoginPage() {
                 </div>
             </div>
             <button onClick={handleLogin}>Login</button>
-        </div>
+        </Box>
     );
 }

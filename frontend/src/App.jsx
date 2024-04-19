@@ -7,6 +7,8 @@ import { authStore } from './stores/auth_store/Store.tsx';
 import { Toaster } from 'react-hot-toast';
 import PrivateRoute from './components/private_route/PrivateRoute';
 import { getUser } from './services/UserApiRequest';
+import PrivateAppBar from './components/PrivateAppBar.jsx';
+import PublicAppBar from './components/PublicAppBar.jsx';
 
 function ErrorBoundary() {
   // Uncaught ReferenceError: path is not defined
@@ -28,6 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <Toaster />
+      {token ? <PrivateAppBar/> : <PublicAppBar/>}
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Home />} />
