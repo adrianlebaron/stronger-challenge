@@ -1,50 +1,216 @@
+import Accordion from '@mui/material/Accordion';
+// import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import Button from '@mui/material/Button';
+import { Container } from '@mui/material';
 
-export default function Home() {
+export default function AccordionUsage() {
   return (
-    <>
-      <div>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus in hac habitasse platea dictumst. Nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum. Felis eget nunc lobortis mattis aliquam faucibus. Nunc congue nisi vitae suscipit tellus. Ut aliquam purus sit amet luctus venenatis lectus magna. Elit eget gravida cum sociis natoque penatibus et magnis dis. Pellentesque habitant morbi tristique senectus. Etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Proin nibh nisl condimentum id venenatis a. Nulla pellentesque dignissim enim sit amet venenatis urna. Sodales ut etiam sit amet. Facilisi morbi tempus iaculis urna id. Volutpat sed cras ornare arcu dui vivamus arcu.
-
-Volutpat blandit aliquam etiam erat velit. Felis eget nunc lobortis mattis aliquam faucibus. In iaculis nunc sed augue lacus viverra vitae congue eu. Diam quis enim lobortis scelerisque fermentum dui. Purus faucibus ornare suspendisse sed nisi lacus. Orci porta non pulvinar neque laoreet suspendisse interdum. Est lorem ipsum dolor sit amet consectetur. Eget aliquet nibh praesent tristique. Et netus et malesuada fames ac turpis egestas sed. Sagittis id consectetur purus ut faucibus pulvinar elementum integer. Lectus proin nibh nisl condimentum. Lorem ipsum dolor sit amet consectetur adipiscing elit pellentesque. Diam maecenas sed enim ut sem viverra aliquet eget. Ut porttitor leo a diam sollicitudin tempor. Sapien pellentesque habitant morbi tristique senectus. Ultrices in iaculis nunc sed augue lacus viverra vitae congue.
-
-Nisi porta lorem mollis aliquam ut porttitor leo a. Turpis in eu mi bibendum neque egestas. Risus nec feugiat in fermentum posuere urna nec tincidunt praesent. Proin libero nunc consequat interdum varius. Lectus mauris ultrices eros in cursus turpis massa tincidunt. Sagittis nisl rhoncus mattis rhoncus urna neque viverra. Morbi quis commodo odio aenean sed adipiscing diam. Mi sit amet mauris commodo quis imperdiet massa tincidunt. Malesuada fames ac turpis egestas sed tempus urna. Eu scelerisque felis imperdiet proin. At augue eget arcu dictum varius duis at. Et netus et malesuada fames ac turpis egestas integer. Arcu dictum varius duis at consectetur lorem. Sed faucibus turpis in eu mi bibendum. Ac turpis egestas integer eget aliquet nibh. Tincidunt vitae semper quis lectus nulla at volutpat diam. Neque volutpat ac tincidunt vitae semper quis lectus.
-
-Felis donec et odio pellentesque diam volutpat commodo sed egestas. Ornare lectus sit amet est placerat in. Molestie ac feugiat sed lectus vestibulum mattis ullamcorper velit. Duis convallis convallis tellus id interdum velit laoreet. Quam pellentesque nec nam aliquam sem et tortor. Arcu dui vivamus arcu felis bibendum ut tristique. Sollicitudin tempor id eu nisl nunc mi ipsum faucibus vitae. Sed vulputate odio ut enim. Metus aliquam eleifend mi in nulla posuere sollicitudin aliquam. At lectus urna duis convallis. Quam quisque id diam vel quam elementum. Bibendum enim facilisis gravida neque convallis a cras semper. Cursus mattis molestie a iaculis at erat pellentesque adipiscing commodo. Lacus viverra vitae congue eu consequat ac felis donec et. Nunc aliquet bibendum enim facilisis.
-
-Sit amet porttitor eget dolor morbi non arcu risus. Vel orci porta non pulvinar neque laoreet suspendisse. Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. Egestas erat imperdiet sed euismod nisi. Urna condimentum mattis pellentesque id nibh tortor id. Sollicitudin nibh sit amet commodo. Arcu non sodales neque sodales ut etiam sit amet. Euismod quis viverra nibh cras pulvinar mattis nunc sed. Non diam phasellus vestibulum lorem sed. Sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque. At auctor urna nunc id cursus metus aliquam eleifend mi. Arcu risus quis varius quam quisque. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor. Urna et pharetra pharetra massa massa ultricies. Id eu nisl nunc mi ipsum faucibus vitae aliquet.
-te odio ut enim blandit volutpat maecenas volutpat blandit. Et malesuada fames ac turpis egestas maecenas. Pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Sed felis eget velit aliquet sagittis id consectetur. Amet est placerat in egestas erat imperdiet sed euismod. Cursus risus at ultrices mi tempus. Adipiscing elit ut aliquam purus sit amet.
-
-At quis risus sed vulputate odio ut enim blandit volutpat. Nec tincidunt praesent semper feugiat nibh sed pulvinar proin. Pellentesque habitant morbi tristique senectus. Vitae tempus quam pellentesque nec nam aliquam. Augue mauris augue neque gravida in fermentum et. Tellus molestie nunc non blandit. Praesent tristique magna sit amet. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Sed faucibus turpis in eu mi bibendum. Posuere morbi leo urna molestie at. Tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin. Amet risus nullam eget felis eget nunc lobortis mattis aliquam. Sodales ut etiam sit amet nisl. Id aliquet lectus proin nibh. Nibh tortor id aliquet lectus proin nibh. Vel pretium lectus quam id leo in vitae. Pellentesque nec nam aliquam sem et tortor consequat.
-
-Velit laoreet id donec ultrices tincidunt arcu non sodales. Aliquet nec ullamcorper sit amet risus nullam. Eget sit amet tellus cras adip
-Fermentum leo vel orci porta non. Lobortis mattis aliquam faucibus purus in. Volutpat blandit aliquam etiam erat velit scelerisque. Faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Et odio pellentesque diam volutpat commodo. Malesuada pellentesque elit eget gravida cum sociis natoque. Feugiat in ante metus dictum at tempor commodo. Viverra maecenas accumsan lacus vel facilisis volutpat. Blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Id neque aliquam vestibulum morbi blandit cursus. Volutpat odio facilisis mauris sit. Pretium nibh ipsum consequat nisl vel pretium lectus.
-
-Consequat nisl vel pretium lectus quam id. Sagittis id consectetur purus ut faucibus pulvinar elementum integer enim. Ipsum faucibus vitae aliquet nec. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Elit ullamcorper dignissim cras tincidunt lobortis. Nullam ac tortor vitae purus faucibus. Ut venenatis tellus in metus vulputate eu. Quam vulputate dignissim suspendisse in est ante in nibh. Aliquet enim tortor at auctor. Pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet.
-
-Pretium lectus quam id leo. Sit amet facilisis magna etiam tempor orci. Tortor consequat id porta nibh. Gravida dictum fusce ut placerat orci nulla pellentesque. Amet nulla facilisi morbi tempus iaculis urna id volutpat. Eu tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Eget duis at tellus at urna condimentum. Est sit amet facilisis magna etiam tempor. Netus et malesuada fames ac turpis. Sit amet dictum sit amet justo donec. Vel turpis nunc eget lorem dolor sed viverra ipsum nunc.
-
-Quisque id diam vel quam elementum pulvinar. Elementum curabitur vitae nunc sed velit. Morbi tempus iaculis urna id volutpat. Tincidunt tortor aliquam nulla facilisi cras. Pellentesque eu tincidunt tortor aliquam nulla facilisi. Id aliquet lectus proin nibh nisl condimentum id venenatis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fringilla phasellus faucibus scelerisque eleifend donec. At imperdiet dui accumsan sit amet nulla facilisi morbi tempus. Quam lacus suspendisse faucibus interdum posuere lorem ipsum dolor. Gravida dictum fusce ut placerat orci nulla pellentesque dignissim enim. Rutrum quisque non tellus orci ac auctor augue mauris. Pretium quam vulputate dignissim suspendisse in est ante.
-
-Eget lorem dolor sed viverra ipsum nunc aliquet bibendum enim. Et sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque. In massa tempor nec feugiat nisl pretium fusce. Faucibus nisl tincidunt eget nullam non nisi. Viverra maecenas accumsan lacus vel facilisis volutpat est velit. Tristique sollicitudin nibh sit amet commodo nulla facilisi. Et magnis dis parturient montes. Nulla aliquet porttitor lacus luctus accumsan tortor posuere ac. Sapien eget mi proin sed libero enim sed. Ut sem nulla pharetra diam sit amet nisl. Integer eget aliquet nibh praesent tristique magna sit amet. Lobortis feugiat vivamus at augue eget arcu. Vel pharetra vel turpis nunc. Convallis aenean et tortor at.
-
-Commodo elit at imperdiet dui accumsan sit. Tellus pellentesque eu tincidunt tortor aliquam nulla. Sodales neque sodales ut etiam sit amet nisl. Libero enim sed faucibus turpis in eu mi bibendum. Mattis rhoncus urna neque viverra justo nec. Ornare suspendisse sed nisi lacus sed viverra. Pellentesque id nibh tortor id aliquet lectus proin nibh nisl. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Magna etiam tempor orci eu lobortis. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor. Et ligula ullamcorper malesuada proin libero nunc. Lorem mollis aliquam ut porttitor. Turpis tincidunt id aliquet risus feugiat. Tellus integer feugiat scelerisque varius morbi.
-
-Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien. Odio facilisis mauris sit amet massa vitae tortor condimentum. Mi tempus imperdiet nulla malesuada pellentesque. Sit amet nulla facilisi morbi tempus iaculis urna id. Volutpat odio facilisis mauris sit amet massa vitae. Suspendisse in est ante in nibh mauris cursus. Quis hendrerit dolor magna eget est lorem. Nisi quis eleifend quam adipiscing vitae proin sagittis nisl rhoncus. Sapien nec sagittis aliquam malesuada bibendum. Tellus molestie nunc non blandit massa. Pellentesque elit ullamcorper dignissim cras tincidunt. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper. Purus faucibus ornare suspendisse sed nisi lacus sed viverra tellus. Mollis nunc sed id semper risus in hendrerit gravida.
-
-Ut venenatis tellus in metus vulputate. Mi proin sed libero enim. Etiam erat velit scelerisque in dictum non consectetur. Sollicitudin aliquam ultrices sagittis orci a scelerisque. Turpis egestas pretium aenean pharetra magna ac placerat. Fermentum iaculis eu non diam. Augue eget arcu dictum varius duis at. Enim nulla aliquet porttitor lacus. Fames ac turpis egestas integer eget aliquet nibh praesent tristique. Nunc sed velit dignissim sodales ut eu sem integer vitae. Cursus euismod quis viverra nibh cras pulvinar mattis nunc sed. Sagittis orci a scelerisque purus semper eget duis at. Et tortor consequat id porta. Vitae justo eget magna fermentum iaculis eu. Vestibulum morbi blandit cursus risus at ultrices mi tempus. Amet risus nullam eget felis eget nunc. Aliquam vestibulum morbi blandit cursus risus at ultrices mi. Ac orci phasellus egestas tellus rutrum tellus. Duis ut diam quam nulla porttitor massa id neque aliquam. Scelerisque eu ultrices vitae auctor eu augue ut.
-
-Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Mi eget mauris pharetra et ultrices. Iaculis nunc sed augue lacus viverra vitae congue. Nullam eget felis eget nunc lobortis mattis aliquam. Massa enim nec dui nunc. Eu scelerisque felis imperdiet proin fermentum leo vel orci porta. Sed blandit libero volutpat sed cras ornare. Tempor nec feugiat nisl pretium fusce id velit. Mauris pellentesque pulvinar pellentesque habitant morbi tristique. Cursus mattis molestie a iaculis. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu.
-
-Purus sit amet volutpat consequat mauris nunc congue. Leo a diam sollicitudin tempor id eu. Urna molestie at elementum eu facilisis sed odio morbi. Ut tristique et egestas quis ipsum suspendisse. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo. Sapien et ligula ullamcorper malesuada proin. Lacus laoreet non curabitur gravida arcu ac tortor dignissim convallis. Posuere morbi leo urna molestie at elementum eu facilisis sed. Pellentesque id nibh tortor id aliquet lectus proin nibh nisl. Ut eu sem integer vitae justo eget magna fermentum iaculis. Gravida dictum fusce ut placerat orci. Fermentum dui faucibus in ornare quam viverra. In arcu cursus euismod quis viverra nibh.
-
-Porttitor eget dolor morbi non arcu risus quis varius. Viverra mauris in aliquam sem fringilla ut morbi tincidunt augue. Pretium nibh ipsum consequat nisl vel pretium. Ultrices dui sapien eget mi proin sed libero enim sed. Congue mauris rhoncus aenean vel elit scelerisque mauris. Urna molestie at elementum eu facilisis sed odio. Et tortor consequat id porta nibh venenatis cras sed felis. Sed faucibus turpis in eu mi bibendum. Rhoncus aenean vel elit scelerisque mauris. Lectus arcu bibendum at varius vel pharetra. Cursus euismod quis viverra nibh cras pulvinar mattis. Molestie nunc non blandit massa enim nec dui. In iaculis nunc sed augue lacus viverra vitae. Viverra mauris in aliquam sem.
-
-Pretium lectus quam id leo in. Consectetur adipiscing elit ut aliquam. Risus in hendrerit gravida rutrum quisque. Ut sem nulla pharetra diam sit amet nisl suscipit adipiscing. Auctor neque vitae tempus quam pellentesque nec nam aliquam sem. Vitae aliquet nec ullamcorper sit amet risus. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum arcu vitae. Aliquam etiam erat velit scelerisque in dictum non. Sapien et ligula ullamcorper malesuada. Tincidunt arcu non sodales neque sodales ut etiam. Ullamcorper a lacus vestibulum sed. Auctor eu augue ut lectus arcu. In vitae turpis massa sed elementum. Mi quis hendrerit dolor magna eget. Eget egestas purus viverra accumsan in nisl nisi scelerisque eu. Molestie at elementum eu facilisis sed. Nisl condimentum id venenatis a condimentum vitae. Nam libero justo laoreet sit amet cursus sit amet. At ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget.
-
-Elementum facilisis leo vel fringilla est ullamcorper. Dolor sit amet consectetur adipiscing elit pellentesque habitant. Tristique sollicitudin nibh sit amet commodo nulla. Nisl condimentum id venenatis a condimentum vitae sapien. Maecenas accumsan lacus vel facilisis volutpat est velit egestas dui. Orci dapibus ultrices in iaculis nunc sed. Ut aliquam purus sit amet luctus venenatis lectus magna. Tempor nec feugiat nisl pretium fusce id velit ut tortor. Massa massa ultricies mi quis hendrerit. Risus nullam eget felis eget. Suscipit tellus mauris a diam maecenas sed enim ut. Quam nulla porttitor massa id neque aliquam. Vitae ultricies leo integer malesuada nunc vel risus commodo. Enim ut tellus elementum sagittis vitae et leo. Diam ut venenatis tellus in metus vulputate eu.
-
-Nunc consequat interdum varius sit amet. Malesuada proin libero nunc consequat interdum varius sit. Cras fermentum odio eu feugiat pretium nibh ipsum consequat. Fermentum et sollicitudin ac orci phasellus. Augue interdum velit euismod in pellentesque massa placerat duis. Habitant morbi tristique senectus et netus et malesuada fames. Varius morbi enim nunc faucibus a pellentesque sit amet porttitor. Egestas quis ipsum suspendisse ultrices gravida dictum. Ultrices dui sapien eget mi proin sed libero enim sed. Duis tristique sollicitudin nibh sit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam. Aliquam vestibulum morbi blandit cursus risus. Semper auctor neque vitae tempus quam. Volutpat sed cras ornare arcu dui. Consequat id porta nibh venenatis cras. Sit amet venenatis urna cursus eget. Porttitor eget dolor morbi non arcu risus quis varius. In tellus integer feugiat scelerisque varius morbi enim.
-      </div>
-    </>
-  )
+    <Container style={{paddingTop: '50px'}}>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
+          Rule 1
+        </AccordionSummary>
+        <AccordionDetails>
+          To enter the challenge, $130 must be sent to @Stefany Patrick by Sunday, January 14th. (If you have an issue with this date, please contact any of the organizers, Vanessa Lebaron, Melody Lebaron, or Stefany Patrick). Deposits may be done with the Cash App, Zelle, or Venmo.  Please PM @StefanyPatrick for more information. We can also receive cash in Mexico. If money is not received by midnight on Sunday the 14th, you will be removed from the group. The $130 is only refundable before the challenge starts on Monday, January 15th, after that, the fee stays in the challenge pot.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 2
+        </AccordionSummary>
+        <AccordionDetails>
+          Participants must workout a minimum of 30 minutes per day, 5 days a week. The 5th workout may be walking (Do not abuse this rule or we will remove it). You may choose whichever 5 days of the week to workout, BUT WE WILL ONLY COUNT 5 days worked out. The week starts Monday and ends on Sunday. Proof of your workout must be posted by the end of the day in the workout group chat on WhatsApp. Valid proof of the workout must include the following: a selfie of yourself, the number of workout for that week you are doing, your name, and a short description of the workout you did. Examples of acceptable workouts include any of the following:  competitive sports, hiking, biking, running, yoga, workout class, dance class, workout video or gym. Examples of workouts that will NOT be allowed/counted include: running through the airport, pushing your stroller, yard work, shoveling snow, ping pong, bowling, dancing at a club or wedding, cleaning your house, or driving range. Please use good judgement and integrity! Walking will only be allowed ONCE a week, unless you have a VALID excuse, such as being sick, injured or pregnant, approved by and sent privately to the organizers, Melody Lebaron or Vanessa LeBaron or Stefany Patrick.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 3
+        </AccordionSummary>
+        <AccordionDetails>
+          This is a Fitness Challenge, so keep all content in the WhatsApp group about Fitness only. You will be removed otherwise.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 4
+        </AccordionSummary>
+        <AccordionDetails>
+          Before pictures (REQUIRED TO WIN ANY FINAL PRIZES), weight and goals must be turned in privately to @Vanessa LeBaron by Sunday, January 14th. A total of 6 photos are required;
+          <ul>
+            <li>
+              3 relaxed pictures of front, side, and back.
+            </li>
+            <li>
+              3 flexed pictures of front, side and back.
+            </li>
+          </ul>
+          Be mindful of the outfit you choose, as it is NOW REQUIRED to use the same outfit for your BEFORE & AFTER pictures.  We suggest 2-piece bathing suit or shorts and a sports bra, whichever you are most comfortable with. We also suggest that you take your pictures in front of a white background. Vanessa Lebaron is the only one that will look at and save your pictures/weight. She will not share with anyone else, but hold on to them, until the challenge ends. She will then forward them back to their owner so that you can put them together with your after pictures, and if you choose, share with the group. Ladies, we will NOT accept after pictures that have a different outfit or that is paired with a flexed and relaxed picture side by side. Valid after pictures must have your face hidden, same outfit, and a before relaxed with an after relaxed or a before flexed with an after flexed.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 5
+        </AccordionSummary>
+        <AccordionDetails>
+          If participants go more than 10 days without working out, they will be removed from the Fitness group on the 11th day, which means surrendering the $130 fee to the Stronger challenge pot.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 6
+        </AccordionSummary>
+        <AccordionDetails>
+          We will have final cash prizes for first place winners at the end of the challenge. These winners are all determined by private voting, except Most Weight Lost and Most Weight Lost Percentage; the organizers will determine that by comparing everyone’s numbers. There will be a different winner for different categories. A small gift will also be given to those that remain in the challenge till the end. Prize amounts will be determined at the end of Challenge. In order to try to win Most Weight Lost and Most Weight Lost Percentage, participants HAVE to report their weight every MONTH throughout the challenge to Vanessa Lebaron.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 7
+        </AccordionSummary>
+        <AccordionDetails>
+          There will be monthly, prized challenges where it is Mandatory for everyone to participate in order to be eligible to win any of the prizes at the end of the challenge. These will be fun, possibly partnered and a little challenging, but do not worry, we will accommodate them to all fitness levels. If you are unable to participate, please contact any of us, Melody, Stefany, or Vanessa, before that monthly challenge ends. These will be discussed further once the Stronger Fitness Challenge starts.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 8
+        </AccordionSummary>
+        <AccordionDetails>
+          Do Not share any pictures from the Fitness group without the consent of the person in the pictures. If anyone shares a picture or anything else from the Fitness group without the other person’s consent, they will be removed from the group, which means surrendering the $130 fee to the Stronger challenge pot.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 9
+        </AccordionSummary>
+        <AccordionDetails>
+          We will be keeping track of your days worked out. A picture of the spreadsheet tracking the days worked out will be posted every Monday. Please pay attention to your days and let us know by the end of the day if we missed to mark any days. Please also let us know if we got your correct name on this spreadsheet.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 10
+        </AccordionSummary>
+        <AccordionDetails>
+          The Stronger-KOS Fitness Challenge, its organizers (Vanessa Lebaron, Melody Lebaron, Stefany Patrick,) and its participants are not liable for any injuries or accidents that the participants may incur during the duration of the Fitness Challenge. With that being said ladies, we want you to become stronger, but keep in mind your limits, your health and your well-being!!!
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 11
+        </AccordionSummary>
+        A lot of unexpected events/situations can happen during the challenge. Because of this, if the organizers think they need to change or add any rules, they have the right to do so. If this causes any concerns, we will consult with the Stronger girls that have been in the Stronger Workout Challenge for more than a year.
+        <AccordionDetails>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 12
+        </AccordionSummary>
+        <AccordionDetails>
+          If the organizers conclude that any participant is starting unnecessary drama, they have the right to remove said participant from the workout group, indefinitely; surrendering the $130 fee to the Stronger workout group.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 13
+        </AccordionSummary>
+        <AccordionDetails>
+          By posting your first workout, it validates that the participant agrees to all of the rules of the Fitness Challenge and therefore surrenders the $130 into the Stronger challenge pot.
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Rule 13
+        </AccordionSummary>
+        <AccordionDetails>
+          We make a donation during each challenge. We love to help our community in any way we can. If you know any good causes or a family in need please let any of the organizers know 🙏🏼
+          <ul>
+            <li>
+              If you still have any questions, let the organizers know.
+            </li>
+          </ul>
+          <li>
+            We look forward to getting STRONGER together!
+          </li>
+        </AccordionDetails>
+      </Accordion>
+      {/* <Accordion defaultExpanded>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel3-content"
+          id="panel3-header"
+        >
+          Accordion Actions
+        </AccordionSummary>
+        <AccordionDetails>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          malesuada lacus ex, sit amet blandit leo lobortis eget.
+        </AccordionDetails>
+        <AccordionActions>
+          <Button>Cancel</Button>
+          <Button>Agree</Button>
+        </AccordionActions>
+      </Accordion> */}
+    </Container >
+  );
 }

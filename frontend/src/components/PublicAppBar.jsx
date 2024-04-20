@@ -14,6 +14,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { ThemeProvider } from '@emotion/react';
 import theme from '../theme/theme'
 import koslogo from '../assets/koslogo.svg'
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 function PublicAppBar() {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -28,7 +29,7 @@ function PublicAppBar() {
 
     return (
         <ThemeProvider theme={theme}>
-            <AppBar position="fixed" color="customColor">
+            <AppBar position="static" color="customColor">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {/* MOBILE NAVBAR */}
@@ -127,7 +128,7 @@ function PublicAppBar() {
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white' }}
                                 href="/signup"
-                                endIcon={<ShoppingBagIcon />}
+                                endIcon={<AppRegistrationIcon />}
                             >
                                 sign up
                             </Button>
