@@ -8,12 +8,16 @@ export default function Profile() {
     // Once data is loaded, render the user information
     return (
         <Container>
-            {/* Render user information */}
-            <div>Username: {user?.username}</div>
-            <div>First Name: {user?.first_name}</div>
-            <div>Last Name: {user?.last_name}</div>
-            <div>Email: {user?.email}</div>
-            <div>Date Joined: {user?.date_joined}</div>
+            {user && (
+                <>
+                    <div>Username: {user?.user.username}</div>
+                    <div>First Name: {user?.user.first_name}</div>
+                    <div>Last Name: {user?.user.last_name}</div>
+                    <div>Email: {user?.user.email}</div>
+                    <div>Date Joined: {user?.user.date_joined}</div>
+                </>
+            )}
         </Container>
     );
+    
 }

@@ -37,8 +37,8 @@ export const authStore = create<Store & Actions>()(
   persist((set) => ({
     token: '',
     user: null,
-    setToken: (token) => set((state) => ({ token: token })),
-    setUser: (user) => set((state) => ({ user: user })),
+    setToken: (token) => set((state) => ({...state, token: token })),
+    setUser: (user) => set((state) => ({ ...state, user: user })),
   }),
     {
       name: 'auth',
