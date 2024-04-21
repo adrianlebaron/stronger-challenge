@@ -3,12 +3,24 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// import Button from '@mui/material/Button';
-import { Container } from '@mui/material';
+import { Container, Box } from '@mui/material';
 
 export default function AccordionUsage() {
   return (
-    <Container style={{paddingTop: '50px'}}>
+    <Container>
+      <Box
+        my={4}
+        display="flex"
+        flexDirection='column'
+        alignItems="center"
+        textAlign='center'
+        gap={4}
+        p={2}
+      >
+        <h1>Stronger Challenge</h1>
+        <p>Hey Ladies! Are you ready to unlock your inner strength, ignite your passion for fitness, and embrace the journey to a healthier, happier you? Join us as we embark on a transformative fitness challenge together, pushing boundaries, breaking barriers, and empowering each other every step of the way. Together, we will sculpt our bodies, elevate our minds, and celebrate every victory, big or small. Let us embrace this journey with determination, support, and a whole lot of girl power! Are you in?</p>
+        <h2>Rules</h2>
+      </Box>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

@@ -29,7 +29,7 @@ function PublicAppBar() {
 
     return (
         <ThemeProvider theme={theme}>
-            <AppBar position="static" color="customColor">
+            <AppBar position='static' color="customColor">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {/* MOBILE NAVBAR */}

@@ -39,7 +39,7 @@ function PrivateAppBar() {
 
     return (
         <ThemeProvider theme={theme}>
-            <AppBar position="fixed" color="customColor">
+            <AppBar position="static" color="customColor">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {/* MOBILE NAVBAR */}
