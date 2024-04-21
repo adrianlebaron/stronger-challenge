@@ -13,7 +13,7 @@ class Command(BaseCommand):
       for i in range(100):
         username = get_random_string(length=10)
         user = User.objects.create_user(username=username, email="", password="123")
-        for i in range(15):
+        for i in range(35):
           CheckIn.objects.create(
             user = user,
             date = datetime.date.today(),

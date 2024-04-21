@@ -4,6 +4,7 @@ import Home from './pages/home/Home';
 import Feed from './pages/feed/Feed';
 import Login from './pages/login/Login';
 import Shop from './pages/shop/Shop';
+import Profile from './pages/profile/Profile'
 import { authStore } from './stores/auth_store/Store.tsx';
 import { Toaster } from 'react-hot-toast';
 import PrivateRoute from './components/private_route/PrivateRoute';
@@ -41,6 +42,7 @@ function App() {
         {/* Private route */}
         <Route element={<PrivateRoute />}>
           <Route path="/feed" element={<Feed />} />
+          <Route path="/profile" element={<Profile/>} />
         </Route>
       </Routes>
     </BrowserRouter>
