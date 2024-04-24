@@ -102,12 +102,22 @@ class UpdateUserView(APIView):
             else:
                 pass
         else:
-            if user.profile.height != request.data['height']:
+            if request.data.get('height'):
                 user.profile.height = request.data['height']
-            if user.profile.weight != request.data['weight']:
+            if request.data.get('weight'):
                 user.profile.weight = request.data['weight']
-            if user.profile.shirt_size != request.data['shirt_size']:
+            if request.data.get('shirt_size'):
                 user.profile.shirt_size = request.data['shirt_size']
+            if request.data.get('first_name'):
+                user.first_name = request.data['first_name']
+            if request.data.get('last_name'):
+                user.last_name = request.data['last_name']
+            if request.data.get('email'):
+                user.email = request.data['email']
+            if request.data.get('age'):
+                user.age = request.data['age']
+            if request.data.get('phone_number'):
+                user.profile.phone_number = request.data['phone_number']
 
             user.save()
         data = {

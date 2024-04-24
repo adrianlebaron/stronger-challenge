@@ -71,6 +71,7 @@ class Profile(models.Model):
     language = models.CharField(max_length=20, choices=LANGUAGE, default="ENGLISH")
     registration = models.BooleanField(default="False")
     registrationSubmission = models.ManyToManyField(Upload, blank=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
 
 
 @receiver(post_save, sender=User)
