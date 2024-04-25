@@ -32,7 +32,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (token) {
-          navigate("/", { replace: true });
+          navigate("/dashboard", { replace: true });
         }
       }, [token, navigate]);
 
