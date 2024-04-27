@@ -1,4 +1,3 @@
-import React from "react";
 
 const HeightInput = ({setValue, value, name = '', className = '', id = '', placeholder = "5'11", required=false}) => {
   const onChange = (e) => {
@@ -22,7 +21,7 @@ const HeightInput = ({setValue, value, name = '', className = '', id = '', place
       return true;
     }
 
-    //if is already 4 characters long don't allow any more input
+    //if it's already 4 characters long, don't allow any more input
     if (currHeight.length === 4) {
         return false;
     }
