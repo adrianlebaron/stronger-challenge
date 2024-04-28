@@ -1,23 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-// import Payment from "../payment/payment";
-// import SlideCard from "../elements/Slide_Card";
 import HeightInput from "../../components/HeightInput";
 import { authStore } from "../../stores/auth_store/Store";
-import Container from '@mui/material/Container';
-import { Box } from "@mui/material";
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import { Container, Button, FormControl, NativeSelect, Typography, Input, InputLabel, Stack } from "@mui/material";
+import { toast } from 'react-hot-toast';
 
 export default function Profile() {
     const { user } = authStore((state) => state.user);
     const { token } = authStore((state) => state);
     const [isPending, setIsPending] = useState(false);
-    const [isFormModified, setIsFormModified] = useState(false); // State to track form modifications
-
+    const [isFormModified, setIsFormModified] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
@@ -25,26 +17,7 @@ export default function Profile() {
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
     const [size, setSize] = useState();
-    const [birthDate, setBirthDate] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-
-    // const handleSuccessfulPayment = () => {
-    //     Axios.put(
-    //         "http://127.0.0.1:8000/api/update-user/",
-    //         {
-    //             registration: true,
-    //             PUT_TYPE: "Payment",
-    //             PAYMENT_TYPE: "Card",
-    //         },
-    //         {
-    //             headers: {
-    //                 Authorization: `Token ${Cookies.get("access_token")}`,
-    //             },
-    //         }
-    //     ).then(() => {
-    //         setTimeout(() => location.reload(), 2000);
-    //     });
-    // };
 
     const handleFormChange = () => {
         setIsFormModified(true);
@@ -63,12 +36,10 @@ export default function Profile() {
                 PUT_TYPE: "Update",
                 first_name: firstName,
                 last_name: lastName,
-                username: username, // Include username in the request body
                 email: email,
                 phone_number: phoneNumber,
                 height: heightInInches,
                 weight: weight,
-                age: birthDate, // Include birthDate in the request body
                 shirt_size: size,
             },
             {
@@ -80,7 +51,7 @@ export default function Profile() {
             // After successful update, reset form modification state
             setIsFormModified(false);
             setIsPending(false);
-            window.location.reload();
+            toast.success("Changes saved! ✅")
         }).catch(error => {
             console.error('Error updating user:', error);
             setIsPending(false);
@@ -99,50 +70,51 @@ export default function Profile() {
             setHeight(user?.profile.formatted_height);
             setWeight(user?.profile.weight);
             setSize(user?.profile.shirt_size);
-            setBirthDate(user?.profile.age);
             setPhoneNumber(user?.profile.phone_number);
         }
     }, [user])
 
     return (
-        <Container>
-            My profile <br />
-            <Box>{username}</Box>
-            {/* <FormControl fullWidth > */}
-                <Box>
-                    <label>Name:</label>
-                    <input
+        <Container sx={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
+            <Stack spacing={2} width={'90%'}>
+                <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant="h4">My profile</Typography>
+                    <Typography variant="h5" color={'#D65DB1'}>{username}</Typography>
+                </Stack>
+                <FormControl variant="standard">
+                    <InputLabel>Name:</InputLabel>
+                    <Input
                         type="text"
                         value={firstName}
                         onChange={(event) => { setFirstName(event.target.value); handleFormChange(); }}
                     />
-                </Box>
-                <Box>
-                    <label>Last name:</label>
-                    <input
+                </FormControl>
+                <FormControl variant="standard">
+                    <InputLabel>Last name:</InputLabel>
+                    <Input
                         type="text"
                         value={lastName}
                         onChange={(event) => { setLastName(event.target.value); handleFormChange(); }}
                     />
-                </Box>
-                <Box>
-                    <label>Email</label>
-                    <input
+                </FormControl>
+                <FormControl variant="standard">
+                    <InputLabel>Email</InputLabel>
+                    <Input
                         type="email"
                         value={email}
                         onChange={(event) => { setEmail(event.target.value); handleFormChange(); }}
                     />
-                </Box>
-                <Box>
-                    <label>Phone number:</label>
-                    <input
-                        type="number"
+                </FormControl>
+                <FormControl variant="standard">
+                    <InputLabel>Phone number:</InputLabel>
+                    <Input
+                        type="tel"
                         value={phoneNumber}
                         onChange={(event) => { setPhoneNumber(event.target.value); handleFormChange(); }}
                     />
-                </Box>
-                <Box>
-                    <label>Height:</label>
+                </FormControl>
+                <FormControl variant="standard">
+                    <InputLabel>Height:</InputLabel>
                     <HeightInput
                         value={height}
                         setValue={(value) => {
@@ -150,55 +122,36 @@ export default function Profile() {
                             handleFormChange();
                         }}
                     />
-                </Box>
-                <Box>
-                    <label>Weight:</label>
-                    <input
+                </FormControl>
+                <FormControl variant="standard">
+                    <InputLabel>Weight:</InputLabel>
+                    <Input
                         type="number"
                         placeholder="Enter Here"
                         value={weight}
                         onChange={(event) => { setWeight(event.target.value); handleFormChange(); }}
                     />
-                </Box>
-                <Box sx={{ minWidth: 120 }}>
-                <FormControl fullWidth >
-
-                    <InputLabel id="demo-simple-select-label">Shirt Size:</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Shirt Size"
-                        SelectDisplayProps={size}
+                </FormControl>
+                <FormControl variant="standard" >
+                    <InputLabel>Shirt Size:</InputLabel>
+                    <NativeSelect
                         value={size}
                         onChange={(event) => { setSize(event.target.value); handleFormChange(); }}
                     >
-                        <MenuItem value="SMALL">Small</MenuItem>
-                        <MenuItem value="MEDIUM">Medium</MenuItem>
-                        <MenuItem value="LARGE">Large</MenuItem>
-                        <MenuItem value="EXTRA-LARGE">Extra-Large</MenuItem>
-                        <MenuItem value="2XL">2XL</MenuItem>
-                        <MenuItem value="3XL">3XL</MenuItem>
-                    </Select>
-                    </FormControl>
-                </Box>
-                <Box>
-                    <Button onClick={handleSubmit} disabled={!isFormModified || isPending}>
+                        <option value="SMALL">Small</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="LARGE">Large</option>
+                        <option value="EXTRA-LARGE">Extra-Large</option>
+                        <option value="2XL">2XL</option>
+                        <option value="3XL">3XL</option>
+                    </NativeSelect>
+                </FormControl>
+                <FormControl variant="standard">
+                    <Button onClick={handleSubmit} disabled={!isFormModified || isPending} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="secondary">
                         Save Changes
                     </Button>
-                </Box>
-            {/* </FormControl> */}
-            {/* {user.profile.registration === false ? ( */}
-            {/* //   <div className="registration">
-        //     <div className="pr-form">
-        //       <div className="pr-header">Register for new season</div>
-        //       <div className="pr-body">
-        //         <SlideCard title={"Pay With Card"}>
-        //           <Payment handleSuccessfulPayment={handleSuccessfulPayment} />
-        //         </SlideCard>
-        //       </div>
-        //     </div>
-        //   </div>
-        // ) : null} */}
+                </FormControl>
+            </Stack>
         </Container>
     );
 }

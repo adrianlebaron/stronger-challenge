@@ -1,15 +1,21 @@
 import {useState} from 'react';
+import { ThemeProvider } from '@emotion/react';
+// Local components
+import theme from '../theme/theme'
+import { authStore } from "../stores/auth_store/Store";
+import koslogo from '../assets/koslogo.svg'
+// MUI components
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+// MUI icons
+import MenuIcon from '@mui/icons-material/Menu';
 import Person3Icon from '@mui/icons-material/Person3';
 import HomeIcon from '@mui/icons-material/Home';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -17,9 +23,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import TableChartIcon from '@mui/icons-material/TableChart';
-import { ThemeProvider } from '@emotion/react';
-import theme from '../theme/theme'
-import { authStore } from "../stores/auth_store/Store";
+import FitnessCenter from '@mui/icons-material/FitnessCenter';
 
 function PrivateAppBar() {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -109,7 +113,7 @@ function PrivateAppBar() {
                                 </MenuItem>
                             </Menu>
                         </Box>
-                        <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                        <FitnessCenter sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                         <Typography
                             variant="h5"
                             noWrap
@@ -126,7 +130,7 @@ function PrivateAppBar() {
                                 textDecoration: 'none',
                             }}
                         >
-                            LOGO
+                            <img src={koslogo} width={100}></img>
                         </Typography>
 
                         {/* DESKTOP NAVBAR */}

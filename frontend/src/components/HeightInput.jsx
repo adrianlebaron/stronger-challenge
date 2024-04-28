@@ -1,3 +1,4 @@
+import { Input } from "@mui/material";
 
 const HeightInput = ({setValue, value, name = '', className = '', id = '', placeholder = "5'11", required=false}) => {
   const onChange = (e) => {
@@ -41,7 +42,7 @@ const HeightInput = ({setValue, value, name = '', className = '', id = '', place
   }
 
   return (
-    <input
+    <Input
       type="text"
       name={name}
       className={className}
