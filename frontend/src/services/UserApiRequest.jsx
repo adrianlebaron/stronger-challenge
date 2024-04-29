@@ -28,3 +28,18 @@ export async function getUser() {
         throw new Error("Failed to get user:", error);
     }
 }
+
+export async function getTotalWorkoutsByUser() {
+    try {
+        const response = await axios.get(`${API_URL}/api/total-workouts/`, {
+            headers: {
+                Authorization: `Token ${authStore.getState().token}`,
+            }, 
+        });
+
+        const totalWorkouts = response.data;
+        return totalWorkouts;
+    } catch (error) {
+        throw new Error("Failed to get workouts:", error);
+    }
+}

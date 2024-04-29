@@ -60,6 +60,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id','username', 'first_name', 'last_name', 'email', 'profile', 'date_joined')
 
+class TotalWorkoutsSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    total_workouts = serializers.IntegerField()
+
 class CheckInSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckIn

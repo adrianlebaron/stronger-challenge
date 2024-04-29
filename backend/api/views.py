@@ -20,7 +20,7 @@ from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
 from rest_framework import generics
 from django.db.models import Count
-
+from collections import defaultdict
 
 class DashboardView(APIView):
     def post(self, request):
@@ -267,6 +267,20 @@ class CheckInDetails(APIView):
 
         return Response(res)
 
+@api_view(['GET'])
+def total_workouts_view(request):
+    total_workouts = get_total_workouts(request)
+    return Response(total_workouts)
+
+def get_total_workouts(request):
+    total_workouts_by_user = defaultdict(int)
+    check_ins = CheckIn.objects.all()
+    for check_in in check_ins:
+        total_workouts_by_user[check_in.user.username] += 1
+    
+    # Sort the dictionary by value (total workouts) in descending order
+    sorted_total_workouts = dict(sorted(total_workouts_by_user.items(), key=lambda item: item[1], reverse=True))
+    return sorted_total_workouts
 
 class CheckInView(APIView):
 
@@ -285,8 +299,9 @@ class CheckInView(APIView):
         if order and order == "newest":
             checkIn = checkIn.order_by('-id')
         checkIn = CheckInSerializer(checkIn, many=True)
+        # It gives the total amount of workouts the current user has, not the total of everyone
         res = {
-            'message': 'GET request hit',
+            'message': 'Here is your workouts total',
             'checkIn': checkIn.data,
             "totalCount": totalCheckIns,
         }

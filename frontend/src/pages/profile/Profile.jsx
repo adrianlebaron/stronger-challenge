@@ -75,7 +75,7 @@ export default function Profile() {
     }, [user])
 
     return (
-        <Container sx={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
+        <Container className="container">
             <Stack spacing={2} width={'90%'}>
                 <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
                     <Typography variant="h4">My profile</Typography>
