@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container, Typography } from '@mui/material';
 import { getTotalWorkoutsByUser } from '../../services/UserApiRequest';
 
 export default function Score() {
@@ -46,8 +46,8 @@ export default function Score() {
           </Table>
         </TableContainer>
       ) : (
-        <p>Loading...</p>
+        <Typography variant="h5" sx={{textAlign: 'center', paddingTop: '50px'}}>Loading table...</Typography>
       )}
     </Container>
   );
-};
+}

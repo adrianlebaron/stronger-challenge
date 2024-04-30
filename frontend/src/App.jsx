@@ -2,16 +2,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Home from './pages/home/Home';
-import Feed from './pages/feed/Feed';
 import Login from './pages/login/Login';
 import Shop from './pages/shop/Shop';
 import Profile from './pages/profile/Profile'
-import Score from './pages/Score/Score'
+import Score from './pages/score/Score'
+import Dashboard from './pages/dashboard/Dashboard'
 import { authStore } from './stores/auth_store/Store.tsx';
 import PrivateRoute from './components/private_route/PrivateRoute';
 import { getUser } from './services/UserApiRequest';
-import PrivateAppBar from './components/PrivateAppBar.jsx';
-import PublicAppBar from './components/PublicAppBar.jsx';
+import PrivateAppBar from './components/PrivateAppBar';
+import PublicAppBar from './components/PublicAppBar';
 
 function ErrorBoundary() {
   // Uncaught ReferenceError: path is not defined
@@ -42,7 +42,7 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         {/* Private route */}
         <Route element={<PrivateRoute />}>
-          <Route path="/feed" element={<Feed />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/score" element={<Score />} />
           <Route path="/profile" element={<Profile />} />
         </Route>

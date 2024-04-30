@@ -13,7 +13,7 @@ type UserProfile = {
   isJunior: boolean;
 }
 
-type User= {
+type User = {
   id: number;
   username: string;
   first_name: string;

@@ -19,7 +19,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Person3Icon from '@mui/icons-material/Person3';
 import HomeIcon from '@mui/icons-material/Home';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import TableChartIcon from '@mui/icons-material/TableChart';
@@ -155,18 +154,6 @@ function PrivateAppBar() {
                                 endIcon={<ShoppingBagIcon />}
                             >
                                 shop
-                            </Button>
-                        </Box>
-
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            <Button
-                                variant="link"
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white' }}
-                                href='/feed'
-                                endIcon={<PeopleAltIcon />}
-                            >
-                                feed
                             </Button>
                         </Box>
 
