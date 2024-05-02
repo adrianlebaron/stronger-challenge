@@ -1,395 +1,273 @@
-import Modal from "react-modal";
-import moment from "moment";
-import axios from "axios";
-import Cookies from "js-cookie";
-import Spinner from "../../spinners/spinner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Modal, Select, MenuItem, Button, InputLabel, FormControl, Grid, Typography, Box } from "@mui/material";
+import { DateTime } from "luxon";
+import { authStore } from "../stores/auth_store/Store";
+import Axios from "axios";
 
-export default function PostWorkout() {
-    const [showModal, setShowModal] = useState('')
-    const [modalDate, setModalDate] = useState(null);
-    const [imgPreview, setImagePreview] = useState(null);
-    const [imgData, setImageData] = useState(null);
-    const [checkedInDates, SetCheckedInDates] = useState([]);
-    const [dates, setDates] = useState([]);
+export default function PostWorkout(){
+  const [showModal, setShowModal] = useState(false);
+  const [modalDate, setModalDate] = useState(null);
+  const [selectedDateObj, setSelectedDateObj] = useState(null);
+  const [imgPreview, setImgPreview] = useState(null);
+  const [imgData, setImgData] = useState(null);
+  const [checkedInDates, setCheckedInDates] = useState([]);
+  const [dates, setDates] = useState([]);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [workoutType, setWorkoutType] = useState("");
 
+  const {token} = authStore((state) => state)
 
-    constructor(props) {
-        super(props);
+  useEffect(() => {
+    getWeek();
+  }, []);
 
-        this.state = {
-            showModal: false,
-            modalDate: null,
-            imgPreview: null,
-            imgData: null,
-            checkedInDates: [],
-            dates: [],
-            buttonDisabled: false,
-            showSpinner: false,
-            hours: 0,
-            minutes: 0,
-        };
+  const getWeek = () => {
+    const dates = [];
+    let today = DateTime.now();
+    let from_date = today.startOf('week');
+    let to_date = today.endOf('week');
 
-        this.handleClosedModal = this.handleClosedModal.bind(this);
-        this.handleOpenModal = this.handleOpenModal.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.getWeek = this.getWeek.bind(this);
+    while (from_date <= to_date) {
+      dates.push(from_date.toFormat("MM/dd/yyyy"));
+      from_date = from_date.plus({ days: 1 });
     }
 
-    getWeek() {
-        var dates = [];
+    setDates(dates);
 
-        let today = moment();
-        let from_date = today.clone().isoWeekday(1);
-        let to_date = today.clone().endOf("isoWeek");
+    Axios.get("http://127.0.0.1:8000/api/checkIn/", {
+      params: {
+        dateOne: DateTime.fromISO(dates[0]).toISODate(),
+        dateTwo: DateTime.fromISO(dates[6]).toISODate(),
+      },
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }).then((response) => {
+      const checkedDates = response.data.checkIn.map(obj => obj.date);
+      setCheckedInDates(checkedDates);
+    });
+  };
 
-        let times_ran = 0;
+  const placeDates = () => {
+    const cutoffDate = DateTime.local().minus({ days: 3 });
+    const today = DateTime.local();
 
-        while (from_date.isSameOrBefore(to_date)) {
-            times_ran += 1;
+    return dates.map((date) => {
+      const formattedDate = DateTime.fromFormat(date, "MM/dd/yyyy");
 
-            if (times_ran > 10) {
-                break;
-            }
-            dates.push(from_date.format("MM/DD/YYYY"));
-            from_date = from_date.add(1, "day");
-        }
+      if (checkedInDates.includes(formattedDate.toFormat("yyyy-MM-dd"))) {
+        return (
+          <div onClick={() => handleOpenModal(date)}  key={date}>
+            <div>{formattedDate.toFormat("EEE")}</div>
+            <div>{formattedDate.toFormat("dd")}</div>
+          </div>
+        );
+      } else if (formattedDate < cutoffDate || formattedDate > today) {
+        return (
+          <div key={date}>
+            <div>{formattedDate.toFormat("EEE")}</div>
+            <div>{formattedDate.toFormat("dd")}</div>
+          </div>
+        );
+      } else if (formattedDate.hasSame(today, 'day')) {
+        return (
+          <div onClick={() => handleOpenModal(date)} key={date}>
+            <div>{formattedDate.toFormat("EEE")}</div>
+            <div>{formattedDate.toFormat("dd")}</div>
+          </div>
+        );
+      } else {
+        return (
+          <div onClick={() => handleOpenModal(date)} key={date}>
+            <div>{formattedDate.toFormat("EEE")}</div>
+            <div>{formattedDate.toFormat("dd")}</div>
+          </div>
+        );
+      }
+    });
+  };
 
-        this.setState({
-            dates: dates,
+  const handleOpenModal = (num) => {
+    let selectedDate = [];
+    if (dates.includes(num)) {
+      if (selectedDateObj) {
+        selectedDateObj.map((obj) => {
+          if (obj.date === DateTime.fromFormat(num, "MM/dd/yyyy").toFormat("yyyy-MM-dd")) {
+            selectedDate.push(obj);
+          }
         });
-
-        axios.get("http://127.0.0.1:8000/api/checkIn/", {
-            params: {
-                dateOne: moment(dates[0]).format("YYYY-MM-DD"),
-                dateTwo: moment(dates[6]).format("YYYY-MM-DD"),
-            },
-            headers: {
-                Authorization: `Token ${Cookies.get("access_token")}`,
-            },
-        }).then((response) => {
-            let checkedDates = [];
-            let dateObj = [];
-            response.data.checkIn.map((obj) => {
-                checkedDates.push(obj.date), dateObj.push(obj);
-            });
-            this.setState({
-                checkedInDates: checkedDates,
-                dateObjs: dateObj,
-            });
-        });
+      }
     }
+    setShowModal(true);
+    setModalDate(num);
+    setSelectedDateObj(selectedDate[0]);
+  };
 
-    placeDates() {
-        let cutoffDate = moment().subtract(3, "days").format("MM/DD/YYYY");
-        let today = moment().format("MM/DD/YYYY");
-        return this.state.dates.map((date) => {
-            if (
-                this.state.checkedInDates.includes(moment(date).format("YYYY-MM-DD"))
-            ) {
-                // if this date already has been checked in, return a checked in box to show date details
-                return (
-                    <div
-                        onClick={() => this.handleOpenModal(date)}
-                        className="week-day checkedIn"
-                        key={date}
-                    >
-                        <div className="day">{moment(date).format("ddd")}</div>
-                        <div className="date">{moment(date).format("DD")}</div>
-                    </div>
-                );
-            } else if (
-                moment(date).format("MM/DD/YYYY") < cutoffDate ||
-                moment(date).format("MM/DD/YYYY") > today
-            ) {
-                // if this date is is in the future or past the cut off date, return a locked box
-                return (
-                    <div className="week-day locked" key={date}>
-                        <div className="day">{moment(date).format("ddd")}</div>
-                        <div className="date">{moment(date).format("DD")}</div>
-                    </div>
-                );
-            } else if (moment(date).format("DD") == moment().format("DD")) {
-                // if this date is today, apply today className
-                return (
-                    <div
-                        onClick={() => this.handleOpenModal(date)}
-                        className="week-day today"
-                        key={date}
-                    >
-                        <div className="day">{moment(date).format("ddd")}</div>
-                        <div className="date">{moment(date).format("DD")}</div>
-                    </div>
-                );
-            } else {
-                // return a regular date/box
-                return (
-                    <div
-                        onClick={() => this.handleOpenModal(date)}
-                        className="week-day"
-                        key={date}
-                    >
-                        <div className="day">{moment(date).format("ddd")}</div>
-                        <div className="date">{moment(date).format("DD")}</div>
-                    </div>
-                );
-            }
-        });
+  const handleClosedModal = () => {
+    setShowModal(false);
+    setHours(0);
+    setMinutes(0);
+    setImgData(null);
+    setImgPreview(null);
+    setModalDate(null);
+    setWorkoutType(null);
+  };
+
+  const handleChange = (event) => {
+    if (event.target.name === "picture") {
+      setImgPreview(URL.createObjectURL(event.target.files[0]));
+      let reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = () => setImgData(reader.result);
+    } else {
+      switch (event.target.name) {
+        case "hours":
+          setHours(event.target.value);
+          break;
+        case "minutes":
+          setMinutes(event.target.value);
+          break;
+        case "workoutType":
+          setWorkoutType(event.target.value);
+          break;
+        default:
+          break;
+      }
     }
+  };
 
-    handleOpenModal(num) {
-        let selectedDate = [];
-        if (this.state.dates.includes(num)) {
-            if (this.state.dateObjs) {
-                this.state.dateObjs.map((obj) => {
-                    if (obj.date === moment(num).format("YYYY-MM-DD")) {
-                        selectedDate.push(obj);
-                    }
-                });
-            }
-        }
-        this.setState({
-            showModal: true,
-            modalDate: num,
-            selectedDateObj: selectedDate[0],
-        });
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setButtonDisabled(true);
 
-    handleClosedModal() {
-        this.setState({
-            showModal: false,
-            hours: 0,
-            minutes: 0,
-            imgData: null,
-            imgPreview: null,
-            modalDate: null,
-            workoutType: null,
-        });
-    }
+    Axios.post(
+      "http://127.0.0.1:8000/api/checkIn/",
+      {
+        imgData: imgData,
+        date: DateTime.fromFormat(modalDate, "MM/dd/yyyy").toFormat("yyyy-MM-dd"),
+        workoutDuration: `${hours}:${minutes}`,
+        workoutType: workoutType,
+      },
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    ).then((response) => {
+      if (response.data.checkIn) {
+        setSelectedDateObj(response.data.checkIn);
+        getWeek();
+      }
+    });
+  };
 
-    handleChange(event) {
-        if (event.target.name === "picture") {
-            this.setState({
-                imgPreview: URL.createObjectURL(event.target.files[0]),
-            });
-
-            let reader = new FileReader();
-            reader.readAsDataURL(event.target.files[0]);
-            reader.onload = () => this.setState({ imgData: reader.result });
-        } else {
-            this.setState({
-                [event.target.name]: event.target.value,
-            });
-        }
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        this.setState({
-            buttonDisabled: true,
-            showSpinner: true,
-        });
-        axios.post(
-            "http://127.0.0.1:8000/api/checkIn/",
-            {
-                imgData: this.state.imgData,
-                date: moment(this.state.modalDate).format("YYYY-MM-DD"),
-                workoutDuration: this.state.hours + ":" + this.state.minutes,
-                workoutType: this.state.workoutType,
-            },
-            {
-                headers: {
-                    Authorization: `Token ${Cookies.get("access_token")}`,
-                },
-            }
-        ).then((response) => {
-            if (response.data.checkIn) {
-                this.setState({
-                    selectedDateObj: response.data.checkIn,
-                });
-                this.getWeek();
-            } else {
-            }
-        });
-    }
-
-    componentDidMount() {
-        Modal.setAppElement("body");
-        this.getWeek();
-    }
-
-    return (
-        <div className="header">
-            {this.placeDates()}
-
-            <Modal
-                className="Modal"
-                overlayClassName="Overlay"
-                isOpen={this.state.showModal}
-                contentLabel="Modal Example"
-                shouldCloseOnOverlayClick={true}
-                onRequestClose={this.handleClosedModal}
-            >
-                <form className="checkin-form" onSubmit={this.handleSubmit}>
-                    <div className="modal-header">
-                        <p className="modal-title">{this.state.modalDate}</p>
-                        <button className="modal-close" onClick={this.handleClosedModal}>
-                            x
-                        </button>
-                    </div>
-                    {this.state.selectedDateObj ? (
-                        <div className="modal-body checkin-body">
-                            <div className="workout-details">
-                                <p className="amount">
-                                    {this.state.selectedDateObj.workoutLength}
-                                </p>
-                                <p className="amount">
-                                    {this.state.selectedDateObj.workoutType}
-                                </p>
-                            </div>
-                            <div className="picture-container">
-                                <div className="img-preview">
-                                    <img
-                                        id="progress-image"
-                                        src={this.state.selectedDateObj.picture}
-                                        alt=""
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="modal-body checkin-body">
-                            {this.state.showSpinner ? <Spinner /> : null}
-                            <div className="workout-details">
-                                <div className="time-container">
-                                    <label htmlFor="">Length of Workout</label>
-                                    <div className="time">
-                                        <div className="hours">
-                                            <label htmlFor="">HR</label>
-                                            <select
-                                                name="hours"
-                                                id=""
-                                                onChange={this.handleChange}
-                                                required
-                                            >
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                            </select>
-                                        </div>
-                                        <div className="minutes">
-                                            <label htmlFor="">MIN</label>
-                                            <select
-                                                name="minutes"
-                                                id=""
-                                                onChange={this.handleChange}
-                                                required
-                                            >
-                                                <option value="" disabled selected>
-                                                    Minutes
-                                                </option>
-                                                <option value="0">0</option>
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                                <option value="30">30</option>
-                                                <option value="35">35</option>
-                                                <option value="40">40</option>
-                                                <option value="45">45</option>
-                                                <option value="50">50</option>
-                                                <option value="55">55</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="workout-container">
-                                    <label htmlFor="">Types of Workout</label>
-                                    <select
-                                        name="workoutType"
-                                        onChange={this.handleChange}
-                                        required
-                                    >
-                                        <option value="" disabled selected>
-                                            Select your workout
-                                        </option>
-                                        <option value="WEIGHTS">Weights</option>
-                                        <option value="CARDIO">Cardio</option>
-                                        <option value="SWIMMING">Swimming</option>
-                                        <option value="RUNNING">Running</option>
-                                        <option value="CYCLING">Cycling</option>
-                                        <option value="SPORTS">Sports</option>
-                                        <option value="SOCCER">Soccer</option>
-                                        <option value="VOLLEYBALL">Volleyball</option>
-                                        <option value="GOLF">Golf</option>
-                                        <option value="HUNTING">Hunting</option>
-                                        <option value="HIKING">Hiking</option>
-                                        <option value="HIIT">HIIT</option>
-                                        <option value="CALISTHENICS">Calisthenics</option>
-                                        <option value="YOGA">Yoga</option>
-                                        <option value="CROSSFIT">Crossfit</option>
-                                        <option value="BASKETBALL">Basketball</option>
-                                        <option value="DISCGOLF">Disc golf</option>
-                                        <option value="RACQUETBALL">Racquetball</option>
-                                        <option value="FOOTBALL">Football</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="picture-container">
-                                <label htmlFor="workout-image-input">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="17"
-                                        viewBox="0 0 20 17"
-                                    >
-                                        <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
-                                    </svg>{" "}
-                                    Upload photo...
-                                </label>
-                                <input
-                                    id="workout-image-input"
-                                    type="file"
-                                    name="picture"
-                                    accept="image/*"
-                                    onChange={this.handleChange}
-                                    required
-                                />
-
-                                <div className="img-preview">
-                                    <img src={this.state.imgPreview} alt="" />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    <div className="modal-footer">
-                        {this.state.selectedDateObj ? (
-                            // <LogoSVG />
-                            <img
-                                className="logo-png"
-                                src="/assets/koslogorough-transparent.png"
-                            />
-                        ) : (
-                            <button type="submit" disabled={this.state.buttonDisabled}>
-                                Submit
-                            </button>
+  return (
+    <div>
+      {placeDates()}
+      <Modal   
+        overlayClassName="Overlay"
+        open={showModal}
+        onClose={handleClosedModal}
+      >
+        <Box onSubmit={handleSubmit} sx={{background: 'white'}}>
+          <div>
+            <Typography variant="h6">{modalDate}</Typography>
+            <Button onClick={handleClosedModal}>x</Button>
+          </div>
+          {selectedDateObj ? (
+            <div>
+              <div>
+                <Typography variant="body1">{selectedDateObj.workoutLength}</Typography>
+                <Typography variant="body1">{selectedDateObj.workoutType}</Typography>
+              </div>
+              <div>
+                <div>
+                  <img id="progress-image" src={selectedDateObj.picture} alt="" />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={6}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="hours">Hours</InputLabel>
+                      <Select
+                        value={hours}
+                        onChange={handleChange}
+                        name="hours"
+                        id="hours"
+                        required
+                      >
+                        {[...Array(13).keys()].map(hour =>
+                          <MenuItem key={hour} value={hour}>{hour}</MenuItem>
                         )}
-                    </div>
-                </form>
-            </Modal>
-        </div>
-    );
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="minutes">Minutes</InputLabel>
+                      <Select
+                        value={minutes}
+                        onChange={handleChange}
+                        name="minutes"
+                        id="minutes"
+                        required
+                      >
+                        {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map(minute =>
+                          <MenuItem key={minute} value={minute}>{minute}</MenuItem>
+                        )}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="workoutType">Workout Type</InputLabel>
+                      <Select
+                        value={workoutType}
+                        onChange={handleChange}
+                        name="workoutType"
+                        id="workoutType"
+                        required
+                      >
+                        {["Weights", "Cardio", "Swimming", "Running", "Cycling", "Sports", "Soccer", "Volleyball", "Golf", "Hunting", "Hiking", "HIIT", "Calisthenics", "Yoga", "Crossfit", "Basketball", "Disc golf", "Racquetball", "Football"].map(type =>
+                          <MenuItem key={type} value={type}>{type}</MenuItem>
+                        )}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <div>
+                  <label htmlFor="workout-image-input">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                      <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
+                    </svg>{" "}
+                    Upload photo...
+                  </label>
+                  <input
+                    id="workout-image-input"
+                    type="file"
+                    name="picture"
+                    accept="image/*"
+                    onChange={handleChange}
+                    required
+                  />
+                  <div>
+                    <img src={imgPreview} alt="" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <Button type="submit" disabled={buttonDisabled}>Submit</Button>
+              </div>
+            </div>
+          )}
+        </Box>
+      </Modal>
+    </div>
+  );
 }

@@ -308,23 +308,7 @@ class CheckInView(APIView):
         return Response(res)
 
     def post(self, request):
-        letters = string.ascii_lowercase
-        image_data = request.data['imgData']
-        letters = string.ascii_lowercase
-        image_name = ''.join(random.choice(letters) for i in range(10))
-
-        try:
-            format, image_data = image_data.split(';base64,')
-        except:
-            pass
-
-        picture = ContentFile(base64.b64decode(
-            image_data), name=image_name + ".jpeg")
-
-        upload = Upload.objects.create(
-            file=picture
-        )
-
+        upload = self.__uploadImage(request.data['imgData'])
         img_url = upload.file.url
 
         data = {
@@ -349,6 +333,22 @@ class CheckInView(APIView):
                 'Errors': checkIn.errors
             }
         return Response(res)
+    
+    def __uploadImage(self, image_data):
+        letters = string.ascii_lowercase
+        image_name = ''.join(random.choice(letters) for i in range(10))
+
+        try:
+            format, image_data = image_data.split(';base64,')
+        except:
+            pass
+
+        picture = ContentFile(base64.b64decode(
+            image_data), name=image_name + ".jpeg")
+
+        return Upload.objects.create(
+            file=picture
+        )
 
 
 class ChallengeAdmin(APIView):

@@ -9,6 +9,7 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'Profile'
     fk_name = 'user'
+    list_display = ('id')
 
 class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline, )
