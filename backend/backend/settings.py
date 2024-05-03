@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'storages',
 
      # LOCAL APPS
-    'api',
+     'administration',
+    'authentication',
+    'workouts',
 ]
 
 MIDDLEWARE = [
