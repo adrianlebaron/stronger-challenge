@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { Modal, Select, MenuItem, Button, InputLabel, FormControl, Grid, Typography, Box } from "@mui/material";
+import { Modal, Select, MenuItem, Button, InputLabel, FormControl, Grid, Typography, TextField  } from "@mui/material";
 import { DateTime } from "luxon";
 import { authStore } from "../stores/auth_store/Store";
-import Axios from "axios";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function PostWorkout(){
   const [showModal, setShowModal] = useState(false);
@@ -15,7 +17,7 @@ export default function PostWorkout(){
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
-  const [workoutType, setWorkoutType] = useState("");
+  const [exercise, setExercise] = useState("");
 
   const {token} = authStore((state) => state)
 
@@ -36,7 +38,7 @@ export default function PostWorkout(){
 
     setDates(dates);
 
-    Axios.get("http://127.0.0.1:8000/workouts/workout/", {
+    axios.get(`${API_URL}/workouts/workout/`, {
       params: {
         dateOne: DateTime.fromISO(dates[0]).toISODate(),
         dateTwo: DateTime.fromISO(dates[6]).toISODate(),
@@ -45,7 +47,7 @@ export default function PostWorkout(){
         Authorization: `Token ${token}`,
       },
     }).then((response) => {
-      const checkedDates = response.data.checkIn.map(obj => obj.date);
+      const checkedDates = response.data.workout.map(obj => obj.date);
       setCheckedInDates(checkedDates);
     });
   };
@@ -57,7 +59,7 @@ export default function PostWorkout(){
     return dates.map((date) => {
       const formattedDate = DateTime.fromFormat(date, "MM/dd/yyyy");
 
-      if (checkedInDates.includes(formattedDate.toFormat("yyyy-MM-dd"))) {
+      if (checkedInDates.includes(formattedDate.toFormat("YYYY-MM-DD"))) {
         return (
           <div onClick={() => handleOpenModal(date)}  key={date}>
             <div>{formattedDate.toFormat("EEE")}</div>
@@ -112,7 +114,7 @@ export default function PostWorkout(){
     setImgData(null);
     setImgPreview(null);
     setModalDate(null);
-    setWorkoutType(null);
+    setExercise(null);
   };
 
   const handleChange = (event) => {
@@ -129,8 +131,8 @@ export default function PostWorkout(){
         case "minutes":
           setMinutes(event.target.value);
           break;
-        case "workoutType":
-          setWorkoutType(event.target.value);
+        case "exercise":
+          setExercise(event.target.value);
           break;
         default:
           break;
@@ -142,13 +144,13 @@ export default function PostWorkout(){
     event.preventDefault();
     setButtonDisabled(true);
 
-    Axios.post(
-      "http://127.0.0.1:8000/api/checkIn/",
+    axios.post(
+      `${API_URL}/workouts/workout/`,
       {
         imgData: imgData,
         date: DateTime.fromFormat(modalDate, "MM/dd/yyyy").toFormat("yyyy-MM-dd"),
-        workoutDuration: `${hours}:${minutes}`,
-        workoutType: workoutType,
+        duration: `${hours}:${minutes}`,
+        exercise: exercise,
       },
       {
         headers: {
@@ -156,8 +158,8 @@ export default function PostWorkout(){
         },
       }
     ).then((response) => {
-      if (response.data.checkIn) {
-        setSelectedDateObj(response.data.checkIn);
+      if (response.data.workout) {
+        setSelectedDateObj(response.data.workout);
         getWeek();
       }
     });
@@ -167,11 +169,10 @@ export default function PostWorkout(){
     <div>
       {placeDates()}
       <Modal   
-        overlayClassName="Overlay"
         open={showModal}
         onClose={handleClosedModal}
       >
-        <Box onSubmit={handleSubmit} sx={{background: 'white'}}>
+        <form onSubmit={handleSubmit} style={{background: 'white'}}>
           <div>
             <Typography variant="h6">{modalDate}</Typography>
             <Button onClick={handleClosedModal}>x</Button>
@@ -180,7 +181,7 @@ export default function PostWorkout(){
             <div>
               <div>
                 <Typography variant="body1">{selectedDateObj.workoutLength}</Typography>
-                <Typography variant="body1">{selectedDateObj.workoutType}</Typography>
+                <Typography variant="body1">{selectedDateObj.exercise}</Typography>
               </div>
               <div>
                 <div>
@@ -226,26 +227,21 @@ export default function PostWorkout(){
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl fullWidth>
-                      <InputLabel htmlFor="workoutType">Workout Type</InputLabel>
-                      <Select
-                        value={workoutType}
+                      <InputLabel htmlFor="exercise">Exercise</InputLabel>
+                      <TextField
+                        value={exercise}
                         onChange={handleChange}
-                        name="workoutType"
-                        id="workoutType"
+                        name="exercise"
+                        id="exercise"
                         required
                       >
-                        {["Weights", "Cardio", "Swimming", "Running", "Cycling", "Sports", "Soccer", "Volleyball", "Golf", "Hunting", "Hiking", "HIIT", "Calisthenics", "Yoga", "Crossfit", "Basketball", "Disc golf", "Racquetball", "Football"].map(type =>
-                          <MenuItem key={type} value={type}>{type}</MenuItem>
-                        )}
-                      </Select>
+                        
+                      </TextField>
                     </FormControl>
                   </Grid>
                 </Grid>
                 <div>
                   <label htmlFor="workout-image-input">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
-                      <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
-                    </svg>{" "}
                     Upload photo...
                   </label>
                   <input
@@ -254,7 +250,6 @@ export default function PostWorkout(){
                     name="picture"
                     accept="image/*"
                     onChange={handleChange}
-                    required
                   />
                   <div>
                     <img src={imgPreview} alt="" />
@@ -266,7 +261,7 @@ export default function PostWorkout(){
               </div>
             </div>
           )}
-        </Box>
+        </form>
       </Modal>
     </div>
   );

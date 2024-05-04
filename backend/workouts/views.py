@@ -35,6 +35,7 @@ class WorkoutView(APIView):
     def get(self, request):
         firstDate = request.query_params.get('dateOne')
         secondDate = request.query_params.get('dateTwo')
+        
         try:
             order = request.query_params.get('order')
         except:

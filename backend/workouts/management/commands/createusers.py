@@ -1,7 +1,7 @@
 from dataclasses import replace
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
-from api.models import Workout
+from workouts.models import Workout
 from django.utils.crypto import get_random_string
 import datetime
 
@@ -17,7 +17,7 @@ class Command(BaseCommand):
           Workout.objects.create(
             user = user,
             date = datetime.date.today(),
-            workoutLength = datetime.time(0, 25, 0, 0),
-            workoutType = "HIIT"
+            duration = datetime.time(0, 25, 0, 0),
+            exercise = "HIIT"
           )
       self.stdout.write(self.style.SUCCESS('Successfully created users and workouts'))

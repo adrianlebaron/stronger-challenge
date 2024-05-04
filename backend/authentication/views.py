@@ -76,11 +76,6 @@ class UserView(APIView):
         user.profile.weight = userInfo['weight']
         user.profile.shirt_size = userInfo['shirt_size']
 
-        if (userInfo.get('isJunior') == "1"):
-            user.profile.isJunior = True
-        else:
-            user.profile.isJunior = False
-
         try:
             device = userInfo['device']
         except:

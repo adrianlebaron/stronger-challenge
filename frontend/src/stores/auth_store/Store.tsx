@@ -10,7 +10,6 @@ type UserProfile = {
   shirt_size: string;
   language: string;
   registration: boolean;
-  isJunior: boolean;
 }
 
 type User = {

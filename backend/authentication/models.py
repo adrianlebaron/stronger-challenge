@@ -59,7 +59,6 @@ class Profile(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.PositiveIntegerField(blank=True, null=True)
-    isJunior = models.BooleanField(default=False)
     height = models.IntegerField(blank=True, null=True)
     weight = models.IntegerField(blank=True, null=True)
     roles = models.CharField(max_length=5, choices=ROLES, default="USER")

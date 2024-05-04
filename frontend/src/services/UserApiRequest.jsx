@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export async function login(username, password) {
 
-    const response = await axios.post(`${API_URL}/api/login/`, {
+    const response = await axios.post(`${API_URL}/authentication/login/`, {
         username,
         password,
     });
@@ -16,7 +16,7 @@ export async function login(username, password) {
 
 export async function getUser() {
     try {
-        const response = await axios.get(`${API_URL}/api/get-user/`, {
+        const response = await axios.get(`${API_URL}/authentication/user/`, {
             headers: {
                 Authorization: `Token ${authStore.getState().token}`,
             },
@@ -31,7 +31,7 @@ export async function getUser() {
 
 export async function getTotalWorkoutsByUser() {
     try {
-        const response = await axios.get(`${API_URL}/api/total-workouts/`, {
+        const response = await axios.get(`${API_URL}/workouts/total-workouts/`, {
             headers: {
                 Authorization: `Token ${authStore.getState().token}`,
             }, 

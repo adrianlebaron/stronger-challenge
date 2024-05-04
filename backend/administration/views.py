@@ -11,8 +11,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 import math
 
-# Create your views here.
-
 class UsersAdmin(APIView):
 
     def get(self, request):

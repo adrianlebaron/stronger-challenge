@@ -5,6 +5,8 @@ import { authStore } from "../../stores/auth_store/Store";
 import { Container, Button, FormControl, NativeSelect, Typography, Input, InputLabel, Stack } from "@mui/material";
 import { toast } from 'react-hot-toast';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Profile() {
     const { user } = authStore((state) => state.user);
     const { token } = authStore((state) => state);
@@ -31,7 +33,7 @@ export default function Profile() {
 
         setIsPending(true);
         await axios.put(
-            "http://127.0.0.1:8000/api/update-user/",
+            `${API_URL}/authentication/user/`,
             {
                 PUT_TYPE: "Update",
                 first_name: firstName,

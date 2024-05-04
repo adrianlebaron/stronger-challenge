@@ -7,6 +7,7 @@ import Shop from './pages/shop/Shop';
 import Profile from './pages/profile/Profile'
 import Score from './pages/score/Score'
 import Dashboard from './pages/dashboard/Dashboard'
+import Admin from './pages/admin/Admin'
 import { authStore } from './stores/auth_store/Store.tsx';
 import PrivateRoute from './components/private_route/PrivateRoute';
 import { getUser } from './services/UserApiRequest';
@@ -45,6 +46,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/score" element={<Score />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/admin" element={<Admin/>} />
         </Route>
       </Routes>
     </BrowserRouter>
