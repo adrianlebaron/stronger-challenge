@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status, permissions
+from django.http import JsonResponse
 
-# Create your views here.
 class UserView(APIView):
     def get(self, request):
         user = UserSerializer(request.user)
@@ -111,18 +111,13 @@ class DeleteAccount(APIView):
         user = request.user
         user = User.objects.get(id=user.id)
         user.delete()
-        return Response({})
+        return Response({'User deleted successfully'})
 
 class Stripe(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        isJunior = request.query_params.get('isJunior')
-        print('ISJUNIOR', isJunior)
-        if isJunior == '1':
-            intent = create_stripe_payment(12000)
-        else:
-            intent = create_stripe_payment(21000)
+        intent = create_stripe_payment(15000) # The price is still uncertain
         client_secret = intent.client_secret
         return Response(client_secret)
 

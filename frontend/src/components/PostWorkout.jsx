@@ -36,7 +36,7 @@ export default function PostWorkout(){
 
     setDates(dates);
 
-    Axios.get("http://127.0.0.1:8000/api/checkIn/", {
+    Axios.get("http://127.0.0.1:8000/workouts/workout/", {
       params: {
         dateOne: DateTime.fromISO(dates[0]).toISODate(),
         dateTwo: DateTime.fromISO(dates[6]).toISODate(),

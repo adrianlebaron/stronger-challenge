@@ -56,8 +56,12 @@ class WorkoutView(APIView):
         return Response(res)
 
     def post(self, request):
-        upload = self.__uploadImage(request.data['imgData'])
-        img_url = upload.file.url
+        img_data = request.data.get('imgData')  # Get imgData field from request
+        img_url = None
+
+        if img_data:
+            upload = self.__uploadImage(img_data)
+            img_url = upload.file.url
 
         data = {
             "user": request.user.id,
@@ -147,8 +151,7 @@ class Challenge(APIView):
         return Response(res)
 
     def get(self, request):
-        challengeSubmissions = ChallengeSubmission.objects.filter(
-            user=request.user)
+        challengeSubmissions = ChallengeSubmission.objects.filter(user=request.user)
         excludeId = []
         for sub in challengeSubmissions:
             excludeId.append(sub.challenge.id)

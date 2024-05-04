@@ -58,7 +58,6 @@ class Profile(models.Model):
         ('SPANISH', 'Spanish')
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    date_of_birth = models.DateField(blank=True, null=True)
     age = models.PositiveIntegerField(blank=True, null=True)
     isJunior = models.BooleanField(default=False)
     height = models.IntegerField(blank=True, null=True)
