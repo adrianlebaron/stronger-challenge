@@ -3,9 +3,10 @@ from .models import *
 from authentication.serializers import UserSerializer
 
 class WorkoutSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Workout
-        fields = ('__all__')
+        fields = ('id', 'user', 'date', 'duration', 'exercise', 'picture' )
 
 class ChallengeSerializer(serializers.ModelSerializer):
     class Meta:
