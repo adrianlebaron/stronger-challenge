@@ -1,8 +1,8 @@
 from django.db import models
 from backend.storage_backends import ImageStorage
 from django.contrib.auth.models import User
+import workouts.utils
 
-# WORKOUT
 class Upload(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     file = models.FileField(storage=ImageStorage())
@@ -13,33 +13,48 @@ class Workout(models.Model):
     duration = models.TimeField()
     exercise = models.CharField(max_length=100)
     picture = models.URLField(blank=True, null=True)
+    
+    def get_share_url(self):
+        hashedId = workouts.utils.h_encode(self.id)
+        return "https://www.kosfitnessclub.com/share/" + hashedId
 
-# CHALLENGE
-class Challenge(models.Model):
-    REPEAT_OPTIONS = (
-        ('Never', 'Never'),
-        ('Weekly', 'Weekly'),
-        ('Bi-Weekly', 'Bi-Weekly'),
-        ('Bi-Monthly', 'Bi-Monthly'),
-        ('Monthly', 'Monthly')
+class WorkoutReaction(models.Model):
+    REACTION_CHOICES = (
+        ('💪', 'Muscle'),
+        ('👍', 'Thumbs Up'),
+        ('🏆', 'Trophy'),
+        ('😎', 'Sunglasses'),
+        ('🥵', 'Face with Heat'),
+        ('💯', '100'),
     )
-    RES_OPTIONS = (
-        ("Time", "Time"),
-        ("Amount", "Amount")
-    )
-    title = models.CharField(max_length=100)
-    summary = models.TextField()
-    repeat = models.CharField(max_length=10, choices=REPEAT_OPTIONS, default="Never")
-    response = models.CharField(max_length=10, choices=RES_OPTIONS, default="Amount")
-    deadline = models.DateTimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    reaction = models.CharField(max_length=2, choices=REACTION_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.user.username} reacted to {self.workout} with {self.reaction}"
 
+class WorkoutComment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name="comments")
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-class ChallengeSubmission(models.Model):
-    user =  models.ForeignKey(User, on_delete=models.CASCADE)
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, null=True, related_name="challenge")
-    time = models.TimeField(blank=True, null=True)
-    amount = models.DecimalField(blank=True, null=True, max_digits=20, decimal_places=5)
-    details = models.TextField(blank=True, null=True)
+class PushNotificationToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=100, unique=True)
+    device_id = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+class PushNotificationTicket(models.Model):
+    ticket_id = models.CharField(max_length=50)
+    push_token = models.ForeignKey(PushNotificationToken, on_delete=models.CASCADE)
+    body = models.TextField()
+    title = models.CharField(max_length=100)
+
+class PushNotificationReceipt(models.Model):
+    ticket = models.ForeignKey(PushNotificationTicket, on_delete=models.CASCADE)
+    error = models.CharField(max_length=50)

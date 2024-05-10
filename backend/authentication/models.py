@@ -7,36 +7,26 @@ from rest_framework.authtoken.models import Token
 from datetime import timedelta
 import django.utils.timezone as timezone
 from backend.storage_backends import ImageStorage
-    
+import uuid
+
 # Create Token When New User Created
-class Upload(models.Model):
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(storage=ImageStorage())
-    
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
-class ForgotPasswordToken(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    token = models.TextField(unique=True)
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
-    def get_token(self):
-        return self.token
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
-    def get_user(self):
-        return self.user
-
-    def is_expired(self):
-
-        expiration_limit = timedelta(minutes=30)
-
-        # using timezone.now() because django's auto_now_add uses it
-        # time.time() or anything else create a 4 hour time difference
-        return ( timezone.now() - self.created > expiration_limit )
-
+class Upload(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(storage=ImageStorage())
 
 # Profile Model That Extends User Model
 class Profile(models.Model):
@@ -68,12 +58,28 @@ class Profile(models.Model):
     registrationSubmission = models.ManyToManyField(Upload, blank=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
 
+class ForgotPasswordToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    token = models.TextField(unique=True)
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+    def get_token(self):
+        return self.token
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    def get_user(self):
+        return self.user
+
+    def is_expired(self):
+
+        expiration_limit = timedelta(minutes=30)
+
+        # using timezone.now() because django's auto_now_add uses it
+        # time.time() or anything else create a 4 hour time difference
+        return ( timezone.now() - self.created > expiration_limit )
+
+class PasswordResetToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    code = models.CharField(max_length=6, null=True, blank=True)
+    verified = models.BooleanField(default=False)
+    expiration = models.DateTimeField()

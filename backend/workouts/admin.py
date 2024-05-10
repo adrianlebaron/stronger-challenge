@@ -3,17 +3,18 @@ from .models import *
 
 # Register your models here.
 class WorkoutAdmin(admin.ModelAdmin):
-    list_display = ('id','date')
+    list_display = ('id', 'user', 'date', 'exercise')
+    list_display_links  = ('id', 'user', 'date')
+    search_fields = ('id',)
 admin.site.register(Workout, WorkoutAdmin)
+
+admin.site.register(WorkoutReaction)
+admin.site.register(WorkoutComment)
 
 class UploadAdmin(admin.ModelAdmin):
     list_display = ('id', 'file')
 admin.site.register(Upload, UploadAdmin)
 
-class ChallengeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title')
-admin.site.register(Challenge, ChallengeAdmin)
-
-class ChallengeSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user')
-admin.site.register(ChallengeSubmission, ChallengeSubmissionAdmin)
+admin.site.register(PushNotificationTicket)
+admin.site.register(PushNotificationReceipt)
+admin.site.register(PushNotificationToken)

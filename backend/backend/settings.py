@@ -39,14 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # THIRD-PARTY
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'corsheaders',
     'storages',
 
      # LOCAL APPS
-     'administration',
     'authentication',
+    'challenges',
+    'prizes',
     'workouts',
 ]
 
@@ -139,6 +140,19 @@ USE_I18N = True
 
 USE_TZ = True
 
+USE_S3 = True
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = 'AKIA6B2AX2356TZH7Y5A'
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'kos-media'
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.us-east-2.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

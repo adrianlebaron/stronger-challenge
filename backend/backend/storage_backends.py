@@ -5,3 +5,8 @@ class ImageStorage(S3Boto3Storage):
     location = 'images'
     default_acl = 'public-read'
     file_overwrite = True
+
+class VideoStorage(S3Boto3Storage):
+    location = 'videos'
+    default_acl = 'public-read'
+    file_overwrite = True

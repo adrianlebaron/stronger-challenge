@@ -4,7 +4,6 @@ from rest_framework.exceptions import ValidationError
 from .models import *
 
 class SignUpSerializer(serializers.ModelSerializer):
-
     password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
 
     class Meta:
@@ -48,7 +47,6 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('age', 'height', 'formatted_height', 'weight', 'roles', 'shirt_size', 'language', 'registration', 'phone_number')
-
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()

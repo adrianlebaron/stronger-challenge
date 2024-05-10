@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.response import Response
 from .serializers import *
 from rest_framework.views import APIView
@@ -6,12 +5,24 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status, permissions
 from django.http import JsonResponse
+from .permissions import IsAdminOrReadOnly
+
+class AdminUsersView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
+    def get(self, request):
+        users = User.objects.all().order_by('-profile__registration')
+        users = UserSerializer(users, many=True)
+        res = {
+            'users': users.data,
+        }
+        return Response(res)
 
 class UserView(APIView):
     def get(self, request):
         user = UserSerializer(request.user)
         data = {
-            'message': 'get request recieved from getuserview',
+            'message': 'here is the current user',
             'user': user.data
         }
         return Response(data)
@@ -54,8 +65,8 @@ class UserView(APIView):
         }
         return Response(data)
     
+    # signup function
     def post(self, request):
-        print("Sign up view hit", request.data)
         userInfo = request.data
         data = {}
         if User.objects.filter(username=userInfo['username']).exists():
@@ -75,6 +86,7 @@ class UserView(APIView):
         user.profile.height = height
         user.profile.weight = userInfo['weight']
         user.profile.shirt_size = userInfo['shirt_size']
+        user.profile.phone_number = userInfo['phone_number']
 
         try:
             device = userInfo['device']
@@ -125,12 +137,77 @@ def ForgotPasswordView(request):
     return Response()
 
 
-@api_view(["POST",])
 @permission_classes([AllowAny])
-def ResetPasswordView(request):
-    status = reset_password(
-        token=request.data['token'], password=request.data['password'])
-    return Response(status)
+class ResetPasswordView(APIView):
+    def post(self, request):
+        user = User.objects.filter(email__iexact=request.data.get('email', '')).first()
+
+        if not user:
+            return Response({'token': '', 'expiration': ''}, status=status.HTTP_404_NOT_FOUND)
+
+        code = f'{random.randrange(1, 10**6):06}'
+        expiration = timezone.now() + timezone.timedelta(minutes=15)
+        token = PasswordResetToken.objects.create(user=user, expiration=expiration, code=code)
+        token_serializer = PasswordResetTokenSerializer(token)
+        send_forgot_password_email(user.email, code)
+
+        return Response(token_serializer.data, status=status.HTTP_200_OK)
+
+@permission_classes([AllowAny])
+class VerifyResetPasswordView(APIView):
+    def post(self, request):
+        code = request.data.get('code')
+        token = request.data.get('token')
+
+        if not code or not token:
+            return Response({"error": "Missing required fields."}, status=status.HTTP_400_BAD_REQUEST)
+
+        reset_token = None
+        try:
+            reset_token = PasswordResetToken.objects.get(token=token)
+        except:
+            return Response({"error": "Invalid code."}, status=status.HTTP_404_NOT_FOUND)
+
+        if code != reset_token.code:
+            return Response({"error": "Invalid code."}, status=status.HTTP_404_NOT_FOUND)
+
+        if reset_token.expiration < timezone.now():
+            reset_token.delete()
+            return Response({"error": "Token expired."}, status=status.HTTP_410_GONE)
+
+        reset_token.verified = True
+        reset_token.save()
+
+        return Response({}, status=status.HTTP_200_OK)
+
+@permission_classes([AllowAny])
+class UpdatePasswordView(APIView):
+    def post(self, request):
+        token = request.data.get('token')
+        new_password = request.data.get('new_password')
+        new_password_confirm = request.data.get('new_password_confirm')
+
+        if not token or not new_password or not new_password_confirm:
+            return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_password != new_password_confirm:
+            return Response({"error": "The two password fields don't match."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            reset_token = PasswordResetToken.objects.get(token=token)
+        except:
+            return Response({"error": "Unverified token."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not reset_token.verified:
+            return Response({'error': 'Unverified token.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = reset_token.user
+        user.set_password(new_password)
+        user.save()
+        reset_token.delete()
+
+        api_token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': api_token.key}, status=status.HTTP_200_OK)
 
 class CheckUsernameView(APIView):
     permission_classes = [permissions.AllowAny]
