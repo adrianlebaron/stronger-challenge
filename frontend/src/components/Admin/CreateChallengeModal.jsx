@@ -32,7 +32,14 @@ export default function CreateChallengeModal() {
     const { token } = authStore((state) => state);
 
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setTitle('');
+        setSummary('');
+        setRepeat('');
+        setResponse('');
+        setDeadline(null);
+    }
 
     const handleSubmit = () => {
         const formattedDeadline = DateTime.fromISO(deadline).toFormat("yyyy-MM-dd");
@@ -55,7 +62,7 @@ export default function CreateChallengeModal() {
                 },
             }
         ).then(() => {
-            toast.success("Challenge Created! 🥵");
+            toast.success("Challenge Created!");
             handleClose();
         }).catch(error => {
             console.error('Error creating challenge:', error);
@@ -98,11 +105,11 @@ export default function CreateChallengeModal() {
                                     label="Repeat"
                                     required
                                 >
-                                    <MenuItem value="never">Never</MenuItem>
-                                    <MenuItem value="weekly">Weekly</MenuItem>
-                                    <MenuItem value="bi-weekly">Bi-weekly</MenuItem>
-                                    <MenuItem value="bi-monthly">Bi-monthly</MenuItem>
-                                    <MenuItem value="monthly">Monthly</MenuItem>
+                                    <MenuItem value="Never">Never</MenuItem>
+                                    <MenuItem value="Weekly">Weekly</MenuItem>
+                                    <MenuItem value="Bi-Weekly">Bi-weekly</MenuItem>
+                                    <MenuItem value="Bi-Monthly">Bi-monthly</MenuItem>
+                                    <MenuItem value="Monthly">Monthly</MenuItem>
                                 </Select>
                             </FormControl>
                             <FormControl>
@@ -113,8 +120,8 @@ export default function CreateChallengeModal() {
                                     label="User response"
                                     required
                                 >
-                                    <MenuItem value="amount">Amount</MenuItem>
-                                    <MenuItem value="time">Time</MenuItem>
+                                    <MenuItem value="Amount">Amount</MenuItem>
+                                    <MenuItem value="Time">Time</MenuItem>
                                 </Select>
                             </FormControl>
                             <FormControl>
@@ -126,7 +133,7 @@ export default function CreateChallengeModal() {
                             </FormControl>
                             <FormControl variant="standard">
                                 <Button onClick={handleSubmit} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="secondary">
-                                    Save Changes
+                                    Create challenge
                                 </Button>
                             </FormControl>
                         </Stack>
