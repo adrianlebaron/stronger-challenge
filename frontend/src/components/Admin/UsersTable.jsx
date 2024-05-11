@@ -33,7 +33,7 @@ export default function UsersTable() {
   const [users, setUsers] = useState([]);
   const [shirtSizeFilter, setShirtSizeFilter] = useState("all");
   const [registrationFilter, setRegistrationFilter] = useState("all");
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -47,7 +47,7 @@ export default function UsersTable() {
       } catch (error) {
         console.error("Failed to get users:", error);
       } finally {
-        setLoading(false); // Set loading state to false when request completes
+        setLoading(false);
       }
     };
 
@@ -70,12 +70,10 @@ export default function UsersTable() {
     return filteredUsers.length;
   };
 
-  // Function to count total users
   const totalUsersCount = () => {
-    if (users) return users.length
-    return users
-  }
-  
+    return users.length
+  };
+
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -120,7 +118,7 @@ export default function UsersTable() {
       {loading ? ( // Conditionally render loading message
         <Typography variant="h5" sx={{ textAlign: 'center', paddingTop: '50px' }}>Loading table...</Typography>
       ) : filteredUsers.length > 0 ? (
-        <>
+        <div>
           <Typography variant="h6" display="block" gutterBottom>
             Total users: {totalUsersCount()}
           </Typography>
@@ -161,7 +159,7 @@ export default function UsersTable() {
               </TableBody>
             </Table>
           </TableContainer>
-        </>
+        </div>
       ) : (
         <>
           <Typography variant="h5" sx={{ textAlign: 'center', paddingTop: '50px' }}>No users found with the applied filters</Typography>
