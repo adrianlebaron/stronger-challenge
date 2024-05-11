@@ -1,10 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-
+import {Tabs, Tab, Box, Typography, Container} from '@mui/material';
 import UsersTable from '../../components/Admin/UsersTable';
 import WorkoutsTable from '../../components/Admin/WorkoutsTable';
 import ChallengesTable from '../../components/Admin/ChallengesTable';
@@ -51,27 +47,29 @@ export default function BasicTabs() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered textColor="secondary" indicatorColor="secondary">
-          <Tab label="Users table" {...a11yProps(0)} />
-          <Tab label="Workouts table" {...a11yProps(1)} />
-          <Tab label="Challenges" {...a11yProps(2)} />
-          <Tab label="Challenge submissions" {...a11yProps(3)} />
-        </Tabs>
+    <Container>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered textColor="secondary" indicatorColor="secondary">
+            <Tab label="Users table" {...a11yProps(0)} />
+            <Tab label="Workouts table" {...a11yProps(1)} />
+            <Tab label="Challenges" {...a11yProps(2)} />
+            <Tab label="Challenge submissions" {...a11yProps(3)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <UsersTable />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <WorkoutsTable />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <ChallengesTable />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <ChallengeSubmissions />
+        </CustomTabPanel>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <UsersTable/>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <WorkoutsTable/>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <ChallengesTable/>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
-        <ChallengeSubmissions/>
-      </CustomTabPanel>
-    </Box>
+    </Container>
   );
 }

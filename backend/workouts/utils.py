@@ -14,7 +14,7 @@ import challenges.models
 import authentication.models
 from datetime import timedelta
 from timeloop import Timeloop
-
+from .models import *
 timeloop = Timeloop()
 
 from django.core.files.base import ContentFile
@@ -145,7 +145,6 @@ def ImageUpload(image):
     img = upload
 
     return img
-
 
 def h_encode(id):
     return hashids.encode(id)

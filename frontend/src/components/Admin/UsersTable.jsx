@@ -38,7 +38,7 @@ export default function UsersTable() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${API_URL}/administration/users-admin/`, {
+        const response = await axios.get(`${API_URL}/authentication/admin/get-users/`, {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -77,7 +77,7 @@ export default function UsersTable() {
   }
   
   return (
-    <div>
+    <>
       <div style={{ display: 'flex' }}>
         {/* Filter by shirt size */}
         <Box sx={{ minWidth: 120 }}>
@@ -167,6 +167,6 @@ export default function UsersTable() {
           <Typography variant="h5" sx={{ textAlign: 'center', paddingTop: '50px' }}>No users found with the applied filters</Typography>
         </>
       )}
-    </div>
+    </>
   );
 }

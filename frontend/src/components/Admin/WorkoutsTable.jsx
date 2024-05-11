@@ -36,7 +36,7 @@ export default function WorkoutsTable() {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const response = await axios.get(`${API_URL}/administration/workouts-details/`, {
+        const response = await axios.get(`${API_URL}/workouts/workout/details/`, {
           headers: {
             Authorization: `Token ${token}`,
           },
