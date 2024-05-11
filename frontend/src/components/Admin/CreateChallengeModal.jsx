@@ -42,6 +42,11 @@ export default function CreateChallengeModal() {
     }
 
     const handleSubmit = () => {
+        if (!title || !summary || !repeat || !response || !deadline) {
+            toast.error('Please fill in all required fields.');
+            return;
+        }
+
         const formattedDeadline = DateTime.fromISO(deadline).toFormat("yyyy-MM-dd");
 
         axios.post(
