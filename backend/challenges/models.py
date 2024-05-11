@@ -17,7 +17,7 @@ class Challenge(models.Model):
     summary = models.TextField()
     repeat = models.CharField(max_length=10, choices=REPEAT_OPTIONS, default="Never")
     response = models.CharField(max_length=10, choices=RES_OPTIONS, default="Amount")
-    deadline = models.DateField()
+    deadline = models.DateField(auto_now=False, auto_now_add=False)
 
     def __str__(self):
         return self.title

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {Tabs, Tab, Box, Typography, Container} from '@mui/material';
 import UsersTable from '../../components/Admin/UsersTable';
 import WorkoutsTable from '../../components/Admin/WorkoutsTable';
-import ChallengesTable from '../../components/Admin/ChallengesTable';
-import ChallengeSubmissions from '../../components/Admin/ChallengeSubmissions';
+import AdminChallenge from '../../components/Admin/AdminChallenge';
+// import ChallengeSubmissions from '../../components/Admin/ChallengeSubmissions';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,10 +64,10 @@ export default function BasicTabs() {
           <WorkoutsTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <ChallengesTable />
+          <AdminChallenge />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          <ChallengeSubmissions />
+          {/* <ChallengeSubmissions /> */}
         </CustomTabPanel>
       </Box>
     </Container>
