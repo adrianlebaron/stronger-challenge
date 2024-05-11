@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Backdrop, Box, Modal, Fade, Button, Typography, Stack, FormControl, InputLabel, TextField, Select, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -30,8 +30,19 @@ export default function CreateChallengeModal() {
     const [response, setResponse] = useState('');
     const [deadline, setDeadline] = useState(null);
     const { token } = authStore((state) => state);
+    const [allFieldsFilled, setAllFieldsFilled] = useState(false);
+
+    useEffect(() => {
+        // Check if all required fields are filled
+        if (title && summary && repeat && response && deadline) {
+            setAllFieldsFilled(true);
+        } else {
+            setAllFieldsFilled(false);
+        }
+    }, [title, summary, repeat, response, deadline]);
 
     const handleOpen = () => setOpen(true);
+
     const handleClose = () => {
         setOpen(false);
         setTitle('');
@@ -97,7 +108,7 @@ export default function CreateChallengeModal() {
                                 <Typography variant="h4">Create a new challenge</Typography>
                             </Stack>
                             <FormControl variant="standard">
-                                <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required/>
+                                <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
                             </FormControl>
                             <FormControl variant="standard">
                                 <TextField label="Summary" value={summary} onChange={(e) => setSummary(e.target.value)} required/>
@@ -137,7 +148,7 @@ export default function CreateChallengeModal() {
                             <FormControl>
                             </FormControl>
                             <FormControl variant="standard">
-                                <Button onClick={handleSubmit} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="secondary">
+                                <Button onClick={handleSubmit} disabled={!allFieldsFilled} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="secondary">
                                     Create challenge
                                 </Button>
                             </FormControl>
