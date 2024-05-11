@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Backdrop, Box, Modal, Fade, Button, Typography, Stack, FormControl, InputLabel, TextField, Select, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -6,7 +6,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { authStore } from "../../stores/auth_store/Store";
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -23,28 +23,20 @@ const style = {
 };
 
 export default function CreateChallengeModal() {
-    const [open, setOpen] = React.useState(false);
-    const [title, setTitle] = React.useState('');
-    const [summary, setSummary] = React.useState('');
-    const [repeat, setRepeat] = React.useState('');
-    const [response, setResponse] = React.useState('');
-    const [deadline] = React.useState(null);
+    const [open, setOpen] = useState(false);
+    const [title, setTitle] = useState('');
+    const [summary, setSummary] = useState('');
+    const [repeat, setRepeat] = useState('');
+    const [response, setResponse] = useState('');
+    const [deadline, setDeadline] = useState(null);
     const { token } = authStore((state) => state);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const setDeadline = (date) => {
-        if (date) {
-            // Format the date using Luxon to ISO date format (YYYY-MM-DD)
-            const isoDate = DateTime.fromJSDate(date).toISODate();
-            setDeadline(isoDate);
-        } else {
-            setDeadline(null);
-        }
-    };
-
     const handleSubmit = () => {
+        const formattedDeadline = DateTime.fromISO(deadline).toFormat("yyyy-MM-dd");
+
         axios.post(
             `${API_URL}/challenges/challenge/admin/`,
             {
@@ -54,7 +46,7 @@ export default function CreateChallengeModal() {
                     summary: summary,
                     repeat: repeat,
                     response: response,
-                    deadline: deadline,
+                    deadline: formattedDeadline,
                 }
             },
             {
@@ -64,7 +56,7 @@ export default function CreateChallengeModal() {
             }
         ).then(() => {
             toast.success("Challenge Created! 🥵");
-            handleClose(); // Close modal after successful submission
+            handleClose();
         }).catch(error => {
             console.error('Error creating challenge:', error);
         })
@@ -93,10 +85,10 @@ export default function CreateChallengeModal() {
                                 <Typography variant="h4">Create a new challenge</Typography>
                             </Stack>
                             <FormControl variant="standard">
-                                <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                                <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required/>
                             </FormControl>
                             <FormControl variant="standard">
-                                <TextField label="Summary" value={summary} onChange={(e) => setSummary(e.target.value)} />
+                                <TextField label="Summary" value={summary} onChange={(e) => setSummary(e.target.value)} required/>
                             </FormControl>
                             <FormControl>
                                 <InputLabel>Repeat</InputLabel>
@@ -104,6 +96,7 @@ export default function CreateChallengeModal() {
                                     value={repeat}
                                     onChange={(e) => setRepeat(e.target.value)}
                                     label="Repeat"
+                                    required
                                 >
                                     <MenuItem value="never">Never</MenuItem>
                                     <MenuItem value="weekly">Weekly</MenuItem>
@@ -118,6 +111,7 @@ export default function CreateChallengeModal() {
                                     value={response}
                                     onChange={(e) => setResponse(e.target.value)}
                                     label="User response"
+                                    required
                                 >
                                     <MenuItem value="amount">Amount</MenuItem>
                                     <MenuItem value="time">Time</MenuItem>
@@ -125,7 +119,7 @@ export default function CreateChallengeModal() {
                             </FormControl>
                             <FormControl>
                                 <LocalizationProvider dateAdapter={AdapterLuxon}>
-                                    <DatePicker label="Date" value={deadline} onChange={(date) => setDeadline(date)} />
+                                    <DatePicker label="Deadline Date" value={deadline} onChange={(date) => setDeadline(date)} required/>
                                 </LocalizationProvider>
                             </FormControl>
                             <FormControl>
