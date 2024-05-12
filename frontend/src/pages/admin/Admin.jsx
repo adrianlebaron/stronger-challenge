@@ -1,10 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import {Tabs, Tab, Box, Typography, Container} from '@mui/material';
+import { Tabs, Tab, Box, Typography, Container } from '@mui/material';
 import UsersTable from '../../components/Admin/UsersTable';
 import WorkoutsTable from '../../components/Admin/WorkoutsTable';
 import AdminChallenge from '../../components/Admin/AdminChallenge';
-// import ChallengeSubmissions from '../../components/Admin/ChallengeSubmissions';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,12 +39,19 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = React.useState(0);
-
+  const [value, setValue] = React.useState(() => {
+    // Get the stored tab value from localStorage or default to 0
+    return parseInt(localStorage.getItem('selectedTab') || '0');
+  });
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+    // Store the selected tab index in localStorage whenever it changes
+    React.useEffect(() => {
+      localStorage.setItem('selectedTab', value.toString());
+    }, [value]);
+    
   return (
     <Container>
       <Box sx={{ width: '100%' }}>
@@ -65,9 +71,6 @@ export default function BasicTabs() {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <AdminChallenge />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={3}>
-          {/* <ChallengeSubmissions /> */}
         </CustomTabPanel>
       </Box>
     </Container>

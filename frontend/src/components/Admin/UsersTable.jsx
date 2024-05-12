@@ -22,7 +22,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -54,7 +53,6 @@ export default function UsersTable() {
     fetchUsers();
   }, [token]);
 
-  // Function to filter users based on shirt size and registration
   const filteredUsers = users.filter(user => {
     if (shirtSizeFilter !== "all" && user.profile.shirt_size !== shirtSizeFilter) {
       return false;
@@ -65,7 +63,6 @@ export default function UsersTable() {
     return true;
   });
 
-  // Function to count users based on filters
   const currentDisplayedCount = () => {
     return filteredUsers.length;
   };
@@ -77,7 +74,6 @@ export default function UsersTable() {
   return (
     <>
       <div style={{ display: 'flex' }}>
-        {/* Filter by shirt size */}
         <Box sx={{ minWidth: 120 }}>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Shirt Size</InputLabel>
@@ -95,11 +91,9 @@ export default function UsersTable() {
               <MenuItem value="2XL">2XL</MenuItem>
               <MenuItem value="3XL">3XL</MenuItem>
               <MenuItem value="4XL">4XL</MenuItem>
-              {/* Add more sizes as needed */}
             </Select>
           </FormControl>
         </Box>
-        {/* Filter by registration status */}
         <Box sx={{ minWidth: 120 }}>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel>Registration</InputLabel>
@@ -115,7 +109,7 @@ export default function UsersTable() {
           </FormControl>
         </Box>
       </div>
-      {loading ? ( // Conditionally render loading message
+      {loading ? (
         <Typography variant="h5" sx={{ textAlign: 'center', paddingTop: '50px' }}>Loading table...</Typography>
       ) : filteredUsers.length > 0 ? (
         <div>

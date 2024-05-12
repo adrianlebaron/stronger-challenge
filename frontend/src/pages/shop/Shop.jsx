@@ -96,7 +96,7 @@ export default function Shop() {
         <Typography><strong>OUR MISSION: </strong>Promote a healthy way of living by providing products with real ingredients to supplement all types of lifestyles.</Typography>
         <Stack direction="row" spacing={2} paddingTop={1} justifyContent='center'>
           <Link href="https://www.instagram.com/kaosfitness__/?hl=en" target='_blank' variant='link' color='inherit' >
-            <InstagramIcon/>
+            <InstagramIcon />
           </Link>
           <Link href="https://www.facebook.com/people/KAOSfitness/100087039288294/?mibextid=LQQJ4d" target='_blank' variant='link' color='inherit'>
             <FacebookIcon />

@@ -80,6 +80,9 @@ export default function CreateChallengeModal() {
         ).then(() => {
             toast.success("Challenge Created!");
             handleClose();
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
         }).catch(error => {
             console.error('Error creating challenge:', error);
         })

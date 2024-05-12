@@ -1,10 +1,11 @@
 import CreateChallengeModal from "./CreateChallengeModal"
+import GetAdminChallenges from "./GetAdminChallenges"
 
 function AdminChallenge() {
   return (
     <div>
-        {/* CREATE MODAL COMPONENT ↓ */}
-        <CreateChallengeModal/>
+        <CreateChallengeModal /> <br/>
+        <GetAdminChallenges />
     </div>
   )
 }
