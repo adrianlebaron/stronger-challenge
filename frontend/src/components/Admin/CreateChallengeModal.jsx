@@ -7,6 +7,7 @@ import { authStore } from "../../stores/auth_store/Store";
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { DateTime } from "luxon";
+import AddIcon from '@mui/icons-material/Add';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -80,7 +81,7 @@ export default function CreateChallengeModal() {
         ).then(() => {
             toast.success("Challenge Created!");
             handleClose();
-            setTimeout(function() {
+            setTimeout(function () {
                 location.reload();
             }, 1000);
         }).catch(error => {
@@ -90,7 +91,9 @@ export default function CreateChallengeModal() {
 
     return (
         <div>
-            <Button onClick={handleOpen} color='secondary' variant='contained'>Create new challenge</Button>
+            <div style={{ margin: "20px" }}>
+                <Button onClick={handleOpen} color='secondary' variant='contained' startIcon={<AddIcon />}>Create challenge</Button>
+            </div>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -114,7 +117,7 @@ export default function CreateChallengeModal() {
                                 <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
                             </FormControl>
                             <FormControl variant="standard">
-                                <TextField label="Summary" value={summary} onChange={(e) => setSummary(e.target.value)} required/>
+                                <TextField label="Summary" value={summary} onChange={(e) => setSummary(e.target.value)} required />
                             </FormControl>
                             <FormControl>
                                 <InputLabel>Repeat</InputLabel>
@@ -145,7 +148,7 @@ export default function CreateChallengeModal() {
                             </FormControl>
                             <FormControl>
                                 <LocalizationProvider dateAdapter={AdapterLuxon}>
-                                    <DatePicker label="Deadline Date" value={deadline} onChange={(date) => setDeadline(date)} required/>
+                                    <DatePicker label="Deadline Date" value={deadline} onChange={(date) => setDeadline(date)} required />
                                 </LocalizationProvider>
                             </FormControl>
                             <FormControl>

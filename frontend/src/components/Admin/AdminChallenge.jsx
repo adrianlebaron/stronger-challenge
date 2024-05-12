@@ -20,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-function AdminChallenge() {
+export default function SubmissionsTable() {
   const { token } = authStore((state) => state);
   const [challenges, setChallenges] = useState([]);
   const [selectedChallengeData, setSelectedChallengeData] = useState(null); // State to hold selected challenge data
@@ -109,7 +109,7 @@ function AdminChallenge() {
 
   return (
     <div>
-      <CreateChallengeModal /> <br />
+      <CreateChallengeModal />
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
           {challenges.map((challenge) => (
@@ -130,11 +130,11 @@ function AdminChallenge() {
                 <Typography>
                   Deadline: {challenge.deadline}
                 </Typography>
-                <Grid item>
-                  <Button variant='outlined' onClick={() => handleEditChallenge(challenge)} startIcon={<EditIcon />} spacing={2}>
+                <Grid item sx={{margin: '15px'}}>
+                  <Button variant='outlined' onClick={() => handleEditChallenge(challenge)} startIcon={<EditIcon />}  size='small' sx={{marginRight: '10px'}} color='secondary'>
                     Edit
                   </Button>
-                  <Button variant='outlined' onClick={() => deleteChallenge(challenge.id)} startIcon={<DeleteIcon />} spacing={2}>
+                  <Button variant='outlined' onClick={() => deleteChallenge(challenge.id)} startIcon={<DeleteIcon />}  size='small' color='secondary'>
                     Delete
                   </Button>
                 </Grid>
@@ -154,5 +154,3 @@ function AdminChallenge() {
     </div>
   )
 }
-
-export default AdminChallenge;

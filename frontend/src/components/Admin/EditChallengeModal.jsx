@@ -6,6 +6,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { DateTime } from "luxon";
+import PropTypes from 'prop-types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -21,8 +22,15 @@ const style = {
     p: 4,
 };
 
+EditChallengeModal.propTypes = {
+    challengeData: PropTypes.object.isRequired,
+    token: PropTypes.string.isRequired,
+    onClose: PropTypes.func,
+  };
+
+
 export default function EditChallengeModal({ challengeData, token, onClose }) {
-    const [open, setOpen] = useState(true);
+    const [open] = useState(true);
     const [title, setTitle] = useState(challengeData.title);
     const [summary, setSummary] = useState(challengeData.summary);
     const [repeat, setRepeat] = useState(challengeData.repeat);
@@ -52,6 +60,9 @@ export default function EditChallengeModal({ challengeData, token, onClose }) {
         ).then(() => {
             toast.success("Challenge Edited!");
             onClose();
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
         }).catch(error => {
             console.error('Error editing challenge:', error);
         })
@@ -119,7 +130,7 @@ export default function EditChallengeModal({ challengeData, token, onClose }) {
                             <FormControl>
                             </FormControl>
                             <FormControl variant="standard">
-                                <Button onClick={handleSubmit} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="primary">
+                                <Button onClick={handleSubmit} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="secondary">
                                     Save changes
                                 </Button>
                             </FormControl>

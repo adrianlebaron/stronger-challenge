@@ -4,6 +4,7 @@ import { Tabs, Tab, Box, Typography, Container } from '@mui/material';
 import UsersTable from '../../components/Admin/UsersTable';
 import WorkoutsTable from '../../components/Admin/WorkoutsTable';
 import AdminChallenge from '../../components/Admin/AdminChallenge';
+import SubmissionsTable from '../../components/Admin/SubmissionsTable'
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,6 +73,9 @@ export default function Admin() {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <AdminChallenge />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <SubmissionsTable />
         </CustomTabPanel>
       </Box>
     </Container>
