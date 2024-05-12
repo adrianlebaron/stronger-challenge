@@ -1,12 +1,14 @@
-import CreateChallengeModal from "./CreateChallengeModal"
+import { useState, useEffect } from 'react';
+import CreateChallengeModal from "./CreateChallengeModal";
+import EditChallengeModal from "./EditChallengeModal";
 import { Paper, Grid, Button, Typography, Box } from '@mui/material';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { authStore } from '../../stores/auth_store/Store';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../index.css'
 import { toast } from 'react-hot-toast';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit'
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,7 +22,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function AdminChallenge() {
   const { token } = authStore((state) => state);
-  const [challenges, setChallenges] = useState([])
+  const [challenges, setChallenges] = useState([]);
+  const [selectedChallengeData, setSelectedChallengeData] = useState(null); // State to hold selected challenge data
 
   const deleteChallenge = async (challengeId) => {
     toast((t) => (
@@ -34,6 +37,7 @@ function AdminChallenge() {
             toast.dismiss(t.id);
             deleteChallengeInternal(challengeId);
           }}
+          spacing={2}
         >
           Yes, delete
         </Button>
@@ -42,6 +46,7 @@ function AdminChallenge() {
           color='secondary'
           size='small'
           variant='contained'
+          sx={{marginLeft: '55px'}}
         >
           Cancel
         </Button>
@@ -77,6 +82,10 @@ function AdminChallenge() {
     }
   };
 
+  const handleEditChallenge = (challengeData) => {
+    setSelectedChallengeData(challengeData); // Set the selected challenge data when user clicks "Edit"
+  };
+
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
@@ -93,6 +102,11 @@ function AdminChallenge() {
 
     fetchChallenges();
   }, [token]);
+
+  const handleCloseEditModal = () => {
+    setSelectedChallengeData(null); // Reset selected challenge data when modal is closed
+  };
+
   return (
     <div>
       <CreateChallengeModal /> <br />
@@ -117,10 +131,10 @@ function AdminChallenge() {
                   Deadline: {challenge.deadline}
                 </Typography>
                 <Grid item>
-                  <Button variant='outlined'>
+                  <Button variant='outlined' onClick={() => handleEditChallenge(challenge)} startIcon={<EditIcon />} spacing={2}>
                     Edit
                   </Button>
-                  <Button variant='outlined' onClick={() => deleteChallenge(challenge.id)} startIcon={<DeleteIcon />}>
+                  <Button variant='outlined' onClick={() => deleteChallenge(challenge.id)} startIcon={<DeleteIcon />} spacing={2}>
                     Delete
                   </Button>
                 </Grid>
@@ -129,8 +143,16 @@ function AdminChallenge() {
           ))}
         </Grid>
       </Box>
+      {/* Render EditChallengeModal if selectedChallengeData is not null */}
+      {selectedChallengeData && (
+        <EditChallengeModal
+          challengeData={selectedChallengeData}
+          token={token}
+          onClose={handleCloseEditModal}
+        />
+      )}
     </div>
   )
 }
 
-export default AdminChallenge
+export default AdminChallenge;
