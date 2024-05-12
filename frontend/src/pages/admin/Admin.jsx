@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab, Box, Typography, Container } from '@mui/material';
 import UsersTable from '../../components/Admin/UsersTable';
@@ -38,20 +38,21 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs() {
-  const [value, setValue] = React.useState(() => {
+export default function Admin() {
+  const [value, setValue] = useState(() => {
     // Get the stored tab value from localStorage or default to 0
     return parseInt(localStorage.getItem('selectedTab') || '0');
   });
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-    // Store the selected tab index in localStorage whenever it changes
-    React.useEffect(() => {
-      localStorage.setItem('selectedTab', value.toString());
-    }, [value]);
-    
+  // Store the selected tab index in localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('selectedTab', value.toString());
+  }, [value]);
+
   return (
     <Container>
       <Box sx={{ width: '100%' }}>

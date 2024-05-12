@@ -1,4 +1,5 @@
 import { Input } from "@mui/material";
+import PropTypes from 'prop-types';
 
 const HeightInput = ({setValue, value, name = '', className = '', id = '', placeholder = "5'11", required=false}) => {
   const onChange = (e) => {
@@ -40,6 +41,16 @@ const HeightInput = ({setValue, value, name = '', className = '', id = '', place
 
     setValue(newValue);
   }
+
+  HeightInput.propTypes = {
+    setValue: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    className: PropTypes.string,
+    id: PropTypes.string,
+    placeholder: PropTypes.string,
+    required: PropTypes.bool,
+  };
 
   return (
     <Input
