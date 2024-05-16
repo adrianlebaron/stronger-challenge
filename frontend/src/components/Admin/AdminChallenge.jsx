@@ -111,9 +111,9 @@ export default function SubmissionsTable() {
     <div>
       <CreateChallengeModal />
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} className='challenge-grid'>
           {challenges.map((challenge) => (
-            <Grid item xs={2} sm={4} md={4} key={challenge.id}>
+            <Grid item xs={2} sm={4} md={4} key={challenge.id} className='challenge-card'>
               <Item>
                 <Typography variant="subtitle1">
                   {challenge.title}
