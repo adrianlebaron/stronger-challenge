@@ -22,7 +22,6 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import TableChartIcon from '@mui/icons-material/TableChart';
-import FitnessCenter from '@mui/icons-material/FitnessCenter';
 
 function PrivateAppBar() {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -112,7 +111,6 @@ function PrivateAppBar() {
                                 </MenuItem>
                             </Menu>
                         </Box>
-                        <FitnessCenter sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                         <Typography
                             variant="h5"
                             noWrap

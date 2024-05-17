@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import HeightInput from "../../components/HeightInput";
 import { authStore } from "../../stores/auth_store/Store";
-import { Container, Button, FormControl, NativeSelect, Typography, Input, InputLabel, Stack } from "@mui/material";
+import { Container, Box, Button, FormControl, NativeSelect, Typography, Input, InputLabel, Stack } from "@mui/material";
 import { toast } from 'react-hot-toast';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -77,83 +77,93 @@ export default function Profile() {
     }, [user])
 
     return (
-        <Container className="container">
-            <Stack spacing={2} width={'90%'}>
-                <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="h4">My profile</Typography>
-                    <Typography variant="h5" color={'#D65DB1'}>{username}</Typography>
+        <Container>
+            <Box
+                my={4}
+                display="flex"
+                flexDirection='column'
+                alignItems="center"
+                textAlign='center'
+                gap={4}
+                p={2}
+            >
+                <Stack spacing={2} width={'90%'}>
+                    <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="h4">My profile</Typography>
+                        <Typography variant="h5" color={'#D65DB1'}>{username}</Typography>
+                    </Stack>
+                    <FormControl variant="standard">
+                        <InputLabel>Name:</InputLabel>
+                        <Input
+                            type="text"
+                            value={firstName}
+                            onChange={(event) => { setFirstName(event.target.value); handleFormChange(); }}
+                        />
+                    </FormControl>
+                    <FormControl variant="standard">
+                        <InputLabel>Last name:</InputLabel>
+                        <Input
+                            type="text"
+                            value={lastName}
+                            onChange={(event) => { setLastName(event.target.value); handleFormChange(); }}
+                        />
+                    </FormControl>
+                    <FormControl variant="standard">
+                        <InputLabel>Email</InputLabel>
+                        <Input
+                            type="email"
+                            value={email}
+                            onChange={(event) => { setEmail(event.target.value); handleFormChange(); }}
+                        />
+                    </FormControl>
+                    <FormControl variant="standard">
+                        <InputLabel>Phone number:</InputLabel>
+                        <Input
+                            type="tel"
+                            value={phoneNumber}
+                            onChange={(event) => { setPhoneNumber(event.target.value); handleFormChange(); }}
+                        />
+                    </FormControl>
+                    <FormControl variant="standard">
+                        <InputLabel>Height:</InputLabel>
+                        <HeightInput
+                            value={height}
+                            setValue={(value) => {
+                                setHeight(value);
+                                handleFormChange();
+                            }}
+                        />
+                    </FormControl>
+                    <FormControl variant="standard">
+                        <InputLabel>Weight:</InputLabel>
+                        <Input
+                            type="number"
+                            placeholder="Enter Here"
+                            value={weight}
+                            onChange={(event) => { setWeight(event.target.value); handleFormChange(); }}
+                        />
+                    </FormControl>
+                    <FormControl variant="standard" >
+                        <InputLabel>Shirt Size:</InputLabel>
+                        <NativeSelect
+                            value={size}
+                            onChange={(event) => { setSize(event.target.value); handleFormChange(); }}
+                        >
+                            <option value="SMALL">Small</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LARGE">Large</option>
+                            <option value="EXTRA-LARGE">Extra-Large</option>
+                            <option value="2XL">2XL</option>
+                            <option value="3XL">3XL</option>
+                        </NativeSelect>
+                    </FormControl>
+                    <FormControl variant="standard">
+                        <Button onClick={handleSubmit} disabled={!isFormModified || isPending} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="secondary">
+                            Save Changes
+                        </Button>
+                    </FormControl>
                 </Stack>
-                <FormControl variant="standard">
-                    <InputLabel>Name:</InputLabel>
-                    <Input
-                        type="text"
-                        value={firstName}
-                        onChange={(event) => { setFirstName(event.target.value); handleFormChange(); }}
-                    />
-                </FormControl>
-                <FormControl variant="standard">
-                    <InputLabel>Last name:</InputLabel>
-                    <Input
-                        type="text"
-                        value={lastName}
-                        onChange={(event) => { setLastName(event.target.value); handleFormChange(); }}
-                    />
-                </FormControl>
-                <FormControl variant="standard">
-                    <InputLabel>Email</InputLabel>
-                    <Input
-                        type="email"
-                        value={email}
-                        onChange={(event) => { setEmail(event.target.value); handleFormChange(); }}
-                    />
-                </FormControl>
-                <FormControl variant="standard">
-                    <InputLabel>Phone number:</InputLabel>
-                    <Input
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(event) => { setPhoneNumber(event.target.value); handleFormChange(); }}
-                    />
-                </FormControl>
-                <FormControl variant="standard">
-                    <InputLabel>Height:</InputLabel>
-                    <HeightInput
-                        value={height}
-                        setValue={(value) => {
-                            setHeight(value);
-                            handleFormChange();
-                        }}
-                    />
-                </FormControl>
-                <FormControl variant="standard">
-                    <InputLabel>Weight:</InputLabel>
-                    <Input
-                        type="number"
-                        placeholder="Enter Here"
-                        value={weight}
-                        onChange={(event) => { setWeight(event.target.value); handleFormChange(); }}
-                    />
-                </FormControl>
-                <FormControl variant="standard" >
-                    <InputLabel>Shirt Size:</InputLabel>
-                    <NativeSelect
-                        value={size}
-                        onChange={(event) => { setSize(event.target.value); handleFormChange(); }}
-                    >
-                        <option value="SMALL">Small</option>
-                        <option value="MEDIUM">Medium</option>
-                        <option value="LARGE">Large</option>
-                        <option value="EXTRA-LARGE">Extra-Large</option>
-                        <option value="2XL">2XL</option>
-                        <option value="3XL">3XL</option>
-                    </NativeSelect>
-                </FormControl>
-                <FormControl variant="standard">
-                    <Button onClick={handleSubmit} disabled={!isFormModified || isPending} sx={{ alignSelf: 'center' }} variant="contained" size="medium" color="secondary">
-                        Save Changes
-                    </Button>
-                </FormControl>
-            </Stack>
+            </Box>
         </Container>
     );
 }

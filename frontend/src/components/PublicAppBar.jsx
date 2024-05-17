@@ -17,7 +17,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import FitnessCenter from '@mui/icons-material/FitnessCenter';
 
 function PublicAppBar() {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -82,7 +81,6 @@ function PublicAppBar() {
                                 </MenuItem>
                             </Menu>
                         </Box>
-                        <FitnessCenter sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                         <Typography
                             variant="h5"
                             noWrap
