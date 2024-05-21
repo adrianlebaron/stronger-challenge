@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { login } from '../../services/UserApiRequest';
 import { toast } from 'react-hot-toast';
 import { authStore } from '../../stores/auth_store/Store';
@@ -51,7 +50,7 @@ export default function LoginPage() {
                 gap={4}
                 p={2}
             >
-                <SportsGymnasticsIcon fontSize='large'/>
+                <SportsGymnasticsIcon fontSize='large' />
                 <Stack spacing={1} sx={{ display: 'flex', alignItems: 'start' }}>
                     <Typography variant="h4">Login</Typography>
                 </Stack>
@@ -87,7 +86,14 @@ export default function LoginPage() {
                         }
                     />
                 </FormControl>
-                <Typography><Link href="https://wa.me/6361159300?text=Hi,%20I%20forgot%20my%20password%20for%20KOS,%20can%20you%20create%20a%20new%20one%20for%20me?" variant="body2">Forgot password?</Link></Typography>
+                <Typography>
+                    <Link
+                        href="https://wa.me/6361159300?text=Hi,%20I%20forgot%20my%20password%20for%20KOS,%20can%20you%20create%20a%20new%20one%20for%20me?"
+                        variant="body2"
+                    >
+                        Forgot password?
+                    </Link>
+                </Typography>
                 <FormControl variant="standard">
                     <Button onClick={handleLogin} color='secondary' variant='contained'>
                         Login
