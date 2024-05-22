@@ -58,7 +58,14 @@ export default function Admin() {
     <Container>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered textColor="secondary" indicatorColor="secondary">
+          <Tabs 
+            value={value} 
+            onChange={handleChange} 
+            aria-label="basic tabs example" 
+            centered textColor="secondary" 
+            indicatorColor="secondary"
+            variant="scrollable"
+            >
             <Tab label="Users table" {...a11yProps(0)} />
             <Tab label="Workouts table" {...a11yProps(1)} />
             <Tab label="Challenges" {...a11yProps(2)} />

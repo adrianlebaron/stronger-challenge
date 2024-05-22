@@ -74,7 +74,7 @@ class UserView(APIView):
         userInfo = request.data
         data = {}
         if User.objects.filter(username=userInfo['username']).exists():
-            return JsonResponse({'error': {'code': 'username_exists', 'message': 'username already in use'}}, status=409)
+            return JsonResponse({'error': {'code': 'username_exists', 'message': 'cannot create account: username already in use, try a different one'}}, status=409)
 
         user = User.objects.create_user(
             username=userInfo['username'],
