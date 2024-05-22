@@ -59,13 +59,6 @@ class WorkoutGetSerializer(serializers.ModelSerializer):
         model = Workout
         fields = ['id','user_reaction' ,'total_reactions','latest_reactions', 'user', 'date', 'duration', 'exercise', 'picture', 'comment_count', 'share_url']
 
-
-class WorkoutCommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    class Meta:
-        model = WorkoutComment
-        fields = ('__all__')
-
 class WorkoutReactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutReaction
@@ -75,4 +68,9 @@ class WorkoutCommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     class Meta:
         model = WorkoutComment
+        fields = ('__all__')
+
+class SeasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
         fields = ('__all__')

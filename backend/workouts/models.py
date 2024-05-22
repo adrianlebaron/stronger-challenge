@@ -58,3 +58,11 @@ class PushNotificationTicket(models.Model):
 class PushNotificationReceipt(models.Model):
     ticket = models.ForeignKey(PushNotificationTicket, on_delete=models.CASCADE)
     error = models.CharField(max_length=50)
+
+class Season(models.Model):
+    active_season = models.BooleanField(default=True)
+    season_start = models.DateField()
+    season_end = models.DateField()
+    season_total_workouts = models.IntegerField()
+    month_goal = models.IntegerField()
+    week_goal = models.IntegerField()

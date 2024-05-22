@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.models import User
 from .serializers import *
 from .models import *
@@ -36,22 +37,33 @@ class WorkoutView(APIView):
         firstDate = request.query_params.get('dateOne')
         secondDate = request.query_params.get('dateTwo')
 
+        startTotal = request.query_params.get('startTotal');
+        endTotal = request.query_params.get('endTotal');
+
+        season = None
+        if not startTotal:
+            season = Season.objects.get(active_season=True)
+            startTotal = season.season_start
+        if not endTotal:
+            if not season:
+                season = Season.objects.get(active_season=True)
+            endTotal = season.season_end
+
         try:
             order = request.query_params.get('order')
         except:
             order = None
 
-        workout = Workout.objects.filter(user=request.user)
-        totalWorkouts = workout.count()
+        totalWorkouts = Workout.objects.filter(user=request.user, date__range=[startTotal, endTotal]).count()
 
-        workout = workout.filter(date__range=[firstDate, secondDate])
+        workout = Workout.objects.filter(user=request.user, date__range=[firstDate, secondDate])
         if order and order == "newest":
             workout = workout.order_by('-id')
         workout = WorkoutSerializer(workout, many=True)
         # It gives the total amount of workouts the current user has, not the total of everyone
         res = {
-            'message': 'Here is your workouts total',
-            'workout': workout.data,
+            "message": "Here is your workouts total",
+            "workout": workout.data,
             "totalCount": totalWorkouts,
         }
         return Response(res)
@@ -403,3 +415,10 @@ class PushToken(APIView):
             return Response({'error': 'token not found'}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(status=status.HTTP_200_OK)
+
+class SeasonView(APIView):
+    persmission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        season = Season.objects.get(active_season=True)
+        return Response(SeasonSerializer(season).data)
