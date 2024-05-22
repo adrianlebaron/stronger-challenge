@@ -22,4 +22,5 @@ urlpatterns = [
     path('challenges/', include('challenges.urls')),
     path('authentication/', include('authentication.urls')),
     path('workouts/', include('workouts.urls')),
+    path('prizes/', include('prizes.urls')),
 ]

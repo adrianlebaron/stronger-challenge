@@ -13,7 +13,7 @@ class Workout(models.Model):
     duration = models.TimeField()
     exercise = models.CharField(max_length=100)
     picture = models.URLField(blank=True, null=True)
-    
+
     def get_share_url(self):
         hashedId = workouts.utils.h_encode(self.id)
         return "https://www.kosfitnessclub.com/share/" + hashedId

@@ -8,7 +8,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['workoutType'] = data['workoutType'].capitalize()
+        data['exercise'] = data['exercise'].capitalize()
         return data
 
     def get_share_url(self, obj):

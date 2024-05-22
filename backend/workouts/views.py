@@ -26,17 +26,16 @@ def get_total_workouts(request):
     check_ins = Workout.objects.all()
     for check_in in check_ins:
         total_workouts_by_user[check_in.user.username] += 1
-    
+
     # Sort the dictionary by value (total workouts) in descending order
     sorted_total_workouts = dict(sorted(total_workouts_by_user.items(), key=lambda item: item[1], reverse=True))
     return sorted_total_workouts
 
 class WorkoutView(APIView):
-
     def get(self, request):
         firstDate = request.query_params.get('dateOne')
         secondDate = request.query_params.get('dateTwo')
-        
+
         try:
             order = request.query_params.get('order')
         except:
@@ -87,7 +86,7 @@ class WorkoutView(APIView):
                 'Errors': workout.errors
             }
         return Response(res)
-    
+
     def put(self, request, pk):
         workout = None
 
@@ -98,8 +97,8 @@ class WorkoutView(APIView):
 
         img = request.data.get('imgData')
         date = request.data.get('date')
-        duration = request.data.get('workoutDuration')
-        workoutType = request.data.get('workoutType')
+        duration = request.data.get('duration')
+        exercise = request.data.get('exercise')
         if not img.startswith('http'):
             upload = self.__uploadImage(img)
             img = upload.file.url
@@ -110,14 +109,14 @@ class WorkoutView(APIView):
             workout.date = date
         if duration:
             workout.duration = duration
-        if workoutType:
-            workout.workoutType = workoutType
+        if exercise:
+            workout.exercise = exercise
 
         workout.save()
         serializer = WorkoutGetSerializer(workout, context={'request': request})
 
         return Response({'workout': serializer.data})
-    
+
     def delete(self, request, pk):
         workout = None
 
@@ -128,7 +127,7 @@ class WorkoutView(APIView):
 
         workout.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     def __uploadImage(self, image_data):
         letters = string.ascii_lowercase
         image_name = ''.join(random.choice(letters) for i in range(10))
@@ -173,7 +172,7 @@ class WorkoutDetails(APIView):
         }
 
         return Response(res)
-    
+
     def getSingleWorkout(self, pk, request):
         workout = None
         pk = h_decode(pk)
@@ -219,7 +218,7 @@ class WorkoutMetaData(APIView):
         if (minutes == "00"):
             duration = hours + ' hrs'
 
-        title = workout.workoutType.capitalize() + " - " + workout.user.first_name + "'s " + duration + " workout"
+        title = workout.exercise.capitalize() + " - " + workout.user.first_name + "'s " + duration + " workout"
         image = workout.picture
 
         data = {
@@ -240,7 +239,7 @@ class CategoryReaction(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         reactions = WorkoutReaction.objects.filter(
-            check_in=workout).order_by('-created_at')
+            workout=workout).order_by('-created_at')
 
         # Agrupa las reacciones por emoji y persona que reaccionó
         aggregated_reactions = reactions.values('user__username', 'reaction')
@@ -369,7 +368,7 @@ class Comment(APIView):
             '-created_at').filter(workout=workout)
 
         return Response(WorkoutCommentSerializer(comments, many=True).data)
-    
+
 
 class PushToken(APIView):
     permission_classes = [IsAuthenticated]

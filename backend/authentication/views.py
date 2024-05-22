@@ -9,7 +9,7 @@ from .permissions import IsAdminOrReadOnly
 
 class AdminUsersView(APIView):
     permission_classes = [IsAdminOrReadOnly]
-    
+
     def get(self, request):
         users = User.objects.all().order_by('-profile__registration')
         users = UserSerializer(users, many=True)
@@ -26,7 +26,7 @@ class UserView(APIView):
             'user': user.data
         }
         return Response(data)
-    
+
     def put(self, request):
         user = request.user
         if request.data['PUT_TYPE'] == 'Payment':
@@ -60,11 +60,15 @@ class UserView(APIView):
                 user.profile.phone_number = request.data['phone_number']
 
             user.save()
+
+        userSerializer = UserSerializer(user)
         data = {
-            'message': 'User Successfully Updated'
+            'message': 'User Successfully Updated',
+            'user': userSerializer.data
         }
+
         return Response(data)
-    
+
     # signup function
     def post(self, request):
         userInfo = request.data
