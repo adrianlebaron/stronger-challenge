@@ -17,4 +17,5 @@ urlpatterns = [
     path('push-token/', PushToken.as_view(), name="updatePushToken"),
     path('push-token/<token>/', PushToken.as_view(), name="deletePushToken"),
     path('get-active-season/', SeasonView.as_view(), name="Season"),
+    path('get-scores/', Scores.as_view(), name="Scores"),
 ]

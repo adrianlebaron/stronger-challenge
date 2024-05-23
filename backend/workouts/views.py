@@ -416,6 +416,40 @@ class PushToken(APIView):
 
         return Response(status=status.HTTP_200_OK)
 
+class Scores(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        page = int(request.GET.get('page', 1))
+        per_page = 25
+
+        start = (page - 1) * per_page
+        end = page * per_page
+        allUsers = User.objects.annotate(score=Count('workout')).order_by('-score')
+        total = allUsers.count()
+        users = allUsers[start:end]
+
+        season = Season.objects.get(active_season=True)
+
+        place = int(request.GET.get('last_loaded_place', 0));
+        highestScore = float(request.GET.get('last_score', float('inf')))
+        data = {}
+        data['rankings'] = users.values()
+        data['season_workouts'] = season.season_total_workouts
+        for user in data['rankings']:
+            if user['score'] < highestScore:
+                highestScore = user['score']
+                place += 1
+
+            user['place'] = place
+            if request.user.id == user['id']:
+                user['highlight'] = True
+
+        data['last_page'] = math.ceil(total / per_page)
+        data['last_loaded_place'] = place
+        data['last_score'] = highestScore
+        return Response(data)
+
 class SeasonView(APIView):
     persmission_classes = [IsAuthenticated]
 
