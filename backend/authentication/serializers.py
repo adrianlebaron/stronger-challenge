@@ -31,13 +31,13 @@ class SignUpSerializer(serializers.ModelSerializer):
         user.set_password(self.validated_data['password'])
         user.save()
         return user
-    
+
 class ProfileSerializer(serializers.ModelSerializer):
     formatted_height = serializers.SerializerMethodField()
 
     def get_formatted_height(self, obj):
         if not isinstance(obj.height, int):
-            return "0'0"
+            return ""
 
         feet = obj.height // 12
         inches = obj.height % 12
