@@ -176,14 +176,14 @@ def send_push_notification(tokens, notification_data):
     for idx, data in enumerate(response_data['data']):
         if data['status'] == 'error':
             if data['details']['error'] == 'DeviceNotRegistered':
-               workouts.models.PushNotificationToken.objects.get(token=tokens[idx].token).delete()
+               authentication.models.PushNotificationToken.objects.get(token=tokens[idx].token).delete()
         else:
-            workouts.models.PushNotificationTicket.objects.create(push_token=tokens[idx], ticket_id=data['id'], title=notification_data['title'], body=notification_data['body'])
+            authentication.models.PushNotificationTicket.objects.create(push_token=tokens[idx], ticket_id=data['id'], title=notification_data['title'], body=notification_data['body'])
 
 @timeloop.job(interval=timedelta(minutes=15))
 def check_push_reciepts():
     url = 'https://exp.host/--/api/v2/push/getReceipts'
-    tickets =  workouts.models.PushNotificationTicket.objects
+    tickets =  authentication.models.PushNotificationTicket.objects
     if tickets.count() == 0:
         return
 
@@ -203,7 +203,7 @@ def check_push_reciepts():
                 if receipt['details']['error'] == 'DeviceNotRegistered':
                     tickets_with_invalid_tokens.append(tickets.get(ticket_id=ticket_id))
                 else:
-                    workouts.models.PushNotificationReceipt.objects.create(ticket=tickets.get(ticket_id=ticket_id, error=receipt['details']['error']))
+                    authentication.models.PushNotificationReceipt.objects.create(ticket=tickets.get(ticket_id=ticket_id, error=receipt['details']['error']))
 
             if receipt['status'] == 'ok':
                 to_delete.append(ticket_id)
@@ -212,11 +212,11 @@ def check_push_reciepts():
         try:
             ticket.push_token.delete()
             ticket.delete()
-        except workouts.models.PushNotificationToken.DoesNotExist:
+        except authentication.models.PushNotificationToken.DoesNotExist:
             pass # deleted by another ticket
 
     # Delete all processed tickets
-    workouts.models.PushNotificationTicket.objects.filter(ticket_id__in=to_delete).delete()
+    authentication.models.PushNotificationTicket.objects.filter(ticket_id__in=to_delete).delete()
 
 # not really sure where to put this, but this is necessary to start the timeloop
 timeloop.start()

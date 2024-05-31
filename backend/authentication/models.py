@@ -83,3 +83,21 @@ class PasswordResetToken(models.Model):
     code = models.CharField(max_length=6, null=True, blank=True)
     verified = models.BooleanField(default=False)
     expiration = models.DateTimeField()
+
+class PushNotificationToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=100, unique=True)
+    device_id = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+class PushNotificationTicket(models.Model):
+    ticket_id = models.CharField(max_length=50)
+    push_token = models.ForeignKey(PushNotificationToken, on_delete=models.CASCADE)
+    body = models.TextField()
+    title = models.CharField(max_length=100)
+
+class PushNotificationReceipt(models.Model):
+    ticket = models.ForeignKey(PushNotificationTicket, on_delete=models.CASCADE)
+    error = models.CharField(max_length=50)
+

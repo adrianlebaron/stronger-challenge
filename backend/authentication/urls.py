@@ -11,4 +11,5 @@ urlpatterns = [
     path('user/login/', obtain_auth_token, name="obtain_auth_token"),
     path('user/forgot-password/', ForgotPasswordView, name="forgot_password"),
     path('user/password-reset/', ResetPasswordView.as_view(), name="password_reset"),
+    path('user/push-token/', PushToken.as_view(), name="updatePushToken"),
 ]

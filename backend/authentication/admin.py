@@ -20,3 +20,7 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
+
+admin.site.register(PushNotificationTicket)
+admin.site.register(PushNotificationReceipt)
+admin.site.register(PushNotificationToken)

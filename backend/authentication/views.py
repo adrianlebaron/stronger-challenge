@@ -235,3 +235,37 @@ class CheckUsernameView(APIView):
 
         return Response({'success': {'code': 'username_available', 'message': 'Username is available'}},
                         status=status.HTTP_200_OK)
+
+class PushToken(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        device_id = request.data.get('device_id')
+        token = request.data.get('token')
+        user = request.user
+
+        if device_id == None or token == None:
+          return Response({'error': 'device_id and token are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        if not PushNotificationToken.objects.filter(user_id=user.id, token=token).exists():
+          try:
+            tokenObject = PushNotificationToken.objects.get(user=user, device_id=device_id)
+            tokenObject.token = token
+            tokenObject.save()
+          except PushNotificationToken.DoesNotExist:
+            tokenObject = PushNotificationToken.objects.create(
+              user=user, token=token, device_id=device_id
+            )
+            token = tokenObject.token
+
+
+        return Response({'token': token})
+
+    def delete(self, request, token):
+        try:
+            PushNotificationToken.objects.get(user=request.user, token=token).delete()
+        except PushNotificationToken.DoesNotExist:
+            return Response({'error': 'token not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(status=status.HTTP_200_OK)
