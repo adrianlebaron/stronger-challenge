@@ -1,4 +1,9 @@
+import datetime
+import threading
 from django.contrib.auth.models import User
+
+from authentication.models import PushNotificationToken
+from workouts.utils import send_push_notification
 from .serializers import *
 from .models import *
 from django.core.files.base import ContentFile
@@ -26,33 +31,43 @@ def get_total_workouts(request):
     check_ins = Workout.objects.all()
     for check_in in check_ins:
         total_workouts_by_user[check_in.user.username] += 1
-    
+
     # Sort the dictionary by value (total workouts) in descending order
     sorted_total_workouts = dict(sorted(total_workouts_by_user.items(), key=lambda item: item[1], reverse=True))
     return sorted_total_workouts
 
 class WorkoutView(APIView):
-
     def get(self, request):
         firstDate = request.query_params.get('dateOne')
         secondDate = request.query_params.get('dateTwo')
-        
+
+        startTotal = request.query_params.get('startTotal');
+        endTotal = request.query_params.get('endTotal');
+
+        season = None
+        if not startTotal:
+            season = Season.objects.get(active_season=True)
+            startTotal = season.season_start
+        if not endTotal:
+            if not season:
+                season = Season.objects.get(active_season=True)
+            endTotal = season.season_end
+
         try:
             order = request.query_params.get('order')
         except:
             order = None
 
-        workout = Workout.objects.filter(user=request.user)
-        totalWorkouts = workout.count()
+        totalWorkouts = Workout.objects.filter(user=request.user, date__range=[startTotal, endTotal]).count()
 
-        workout = workout.filter(date__range=[firstDate, secondDate])
+        workout = Workout.objects.filter(user=request.user, date__range=[firstDate, secondDate])
         if order and order == "newest":
             workout = workout.order_by('-id')
         workout = WorkoutSerializer(workout, many=True)
         # It gives the total amount of workouts the current user has, not the total of everyone
         res = {
-            'message': 'Here is your workouts total',
-            'workout': workout.data,
+            "message": "Here is your workouts total",
+            "workout": workout.data,
             "totalCount": totalWorkouts,
         }
         return Response(res)
@@ -87,7 +102,7 @@ class WorkoutView(APIView):
                 'Errors': workout.errors
             }
         return Response(res)
-    
+
     def put(self, request, pk):
         workout = None
 
@@ -98,8 +113,8 @@ class WorkoutView(APIView):
 
         img = request.data.get('imgData')
         date = request.data.get('date')
-        duration = request.data.get('workoutDuration')
-        workoutType = request.data.get('workoutType')
+        duration = request.data.get('duration')
+        exercise = request.data.get('exercise')
         if not img.startswith('http'):
             upload = self.__uploadImage(img)
             img = upload.file.url
@@ -110,14 +125,14 @@ class WorkoutView(APIView):
             workout.date = date
         if duration:
             workout.duration = duration
-        if workoutType:
-            workout.workoutType = workoutType
+        if exercise:
+            workout.exercise = exercise
 
         workout.save()
         serializer = WorkoutGetSerializer(workout, context={'request': request})
 
         return Response({'workout': serializer.data})
-    
+
     def delete(self, request, pk):
         workout = None
 
@@ -128,7 +143,7 @@ class WorkoutView(APIView):
 
         workout.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     def __uploadImage(self, image_data):
         letters = string.ascii_lowercase
         image_name = ''.join(random.choice(letters) for i in range(10))
@@ -173,7 +188,7 @@ class WorkoutDetails(APIView):
         }
 
         return Response(res)
-    
+
     def getSingleWorkout(self, pk, request):
         workout = None
         pk = h_decode(pk)
@@ -219,7 +234,7 @@ class WorkoutMetaData(APIView):
         if (minutes == "00"):
             duration = hours + ' hrs'
 
-        title = workout.workoutType.capitalize() + " - " + workout.user.first_name + "'s " + duration + " workout"
+        title = workout.exercise.capitalize() + " - " + workout.user.first_name + "'s " + duration + " workout"
         image = workout.picture
 
         data = {
@@ -240,7 +255,7 @@ class CategoryReaction(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         reactions = WorkoutReaction.objects.filter(
-            check_in=workout).order_by('-created_at')
+            workout=workout).order_by('-created_at')
 
         # Agrupa las reacciones por emoji y persona que reaccionó
         aggregated_reactions = reactions.values('user__username', 'reaction')
@@ -366,41 +381,48 @@ class Comment(APIView):
             return Response({'error': 'workout not found'}, status=status.HTTP_404_NOT_FOUND)
 
         comments = WorkoutComment.objects.order_by(
-            '-created_at').filter(workout=workout)
+            'created_at').filter(workout=workout)
 
         return Response(WorkoutCommentSerializer(comments, many=True).data)
-    
 
-class PushToken(APIView):
+
+class Scores(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        device_id = request.data.get('device_id')
-        token = request.data.get('token')
-        user = request.user
+    def get(self, request):
+        page = int(request.GET.get('page', 1))
+        per_page = 25
 
-        if device_id == None or token == None:
-          return Response({'error': 'device_id and token are required'}, status=status.HTTP_400_BAD_REQUEST)
+        start = (page - 1) * per_page
+        end = page * per_page
+        allUsers = User.objects.annotate(score=Count('workout')).order_by('-score')
+        total = allUsers.count()
+        users = allUsers[start:end]
 
+        season = Season.objects.get(active_season=True)
 
-        if not PushNotificationToken.objects.filter(user_id=user.id, token=token).exists():
-          try:
-            tokenObject = PushNotificationToken.objects.get(user=user, device_id=device_id)
-            tokenObject.token = token
-            tokenObject.save()
-          except PushNotificationToken.DoesNotExist:
-            tokenObject = PushNotificationToken.objects.create(
-              user=user, token=token, device_id=device_id
-            )
-            token = tokenObject.token
+        place = int(request.GET.get('last_loaded_place', 0));
+        highestScore = float(request.GET.get('last_score', float('inf')))
+        data = {}
+        data['rankings'] = users.values()
+        data['season_workouts'] = season.season_total_workouts
+        for user in data['rankings']:
+            if user['score'] < highestScore:
+                highestScore = user['score']
+                place += 1
 
+            user['place'] = place
+            if request.user.id == user['id']:
+                user['highlight'] = True
 
-        return Response({'token': token})
+        data['last_page'] = math.ceil(total / per_page)
+        data['last_loaded_place'] = place
+        data['last_score'] = highestScore
+        return Response(data)
 
-    def delete(self, request, token):
-        try:
-            PushNotificationToken.objects.get(user=request.user, token=token).delete()
-        except PushNotificationToken.DoesNotExist:
-            return Response({'error': 'token not found'}, status=status.HTTP_404_NOT_FOUND)
+class SeasonView(APIView):
+    persmission_classes = [IsAuthenticated]
 
-        return Response(status=status.HTTP_200_OK)
+    def get(self, request):
+        season = Season.objects.get(active_season=True)
+        return Response(SeasonSerializer(season).data)

@@ -1,4 +1,7 @@
+import random
 from rest_framework.response import Response
+
+from authentication.utils import send_forgot_password_email
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
@@ -9,7 +12,7 @@ from .permissions import IsAdminOrReadOnly
 
 class AdminUsersView(APIView):
     permission_classes = [IsAdminOrReadOnly]
-    
+
     def get(self, request):
         users = User.objects.all().order_by('-profile__registration')
         users = UserSerializer(users, many=True)
@@ -26,7 +29,7 @@ class UserView(APIView):
             'user': user.data
         }
         return Response(data)
-    
+
     def put(self, request):
         user = request.user
         if request.data['PUT_TYPE'] == 'Payment':
@@ -60,11 +63,15 @@ class UserView(APIView):
                 user.profile.phone_number = request.data['phone_number']
 
             user.save()
+
+        userSerializer = UserSerializer(user)
         data = {
-            'message': 'User Successfully Updated'
+            'message': 'User Successfully Updated',
+            'user': userSerializer.data
         }
+
         return Response(data)
-    
+
     # signup function
     def post(self, request):
         userInfo = request.data
@@ -127,15 +134,6 @@ class Stripe(APIView):
         intent = create_stripe_payment(15000) # The price is still uncertain
         client_secret = intent.client_secret
         return Response(client_secret)
-
-@api_view(["POST",])
-@permission_classes([AllowAny])
-def ForgotPasswordView(request):
-
-    send_forgot_password_email(request.data['email'])
-
-    return Response()
-
 
 @permission_classes([AllowAny])
 class ResetPasswordView(APIView):
@@ -228,3 +226,37 @@ class CheckUsernameView(APIView):
 
         return Response({'success': {'code': 'username_available', 'message': 'Username is available'}},
                         status=status.HTTP_200_OK)
+
+class PushToken(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        device_id = request.data.get('device_id')
+        token = request.data.get('token')
+        user = request.user
+
+        if device_id == None or token == None:
+          return Response({'error': 'device_id and token are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        if not PushNotificationToken.objects.filter(user_id=user.id, token=token).exists():
+          try:
+            tokenObject = PushNotificationToken.objects.get(user=user, device_id=device_id)
+            tokenObject.token = token
+            tokenObject.save()
+          except PushNotificationToken.DoesNotExist:
+            tokenObject = PushNotificationToken.objects.create(
+              user=user, token=token, device_id=device_id
+            )
+            token = tokenObject.token
+
+
+        return Response({'token': token})
+
+    def delete(self, request, token):
+        try:
+            PushNotificationToken.objects.get(user=request.user, token=token).delete()
+        except PushNotificationToken.DoesNotExist:
+            return Response({'error': 'token not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(status=status.HTTP_200_OK)

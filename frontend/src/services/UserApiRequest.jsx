@@ -34,7 +34,7 @@ export async function getTotalWorkoutsByUser() {
         const response = await axios.get(`${API_URL}/workouts/workout/total/`, {
             headers: {
                 Authorization: `Token ${authStore.getState().token}`,
-            }, 
+            },
         });
 
         const totalWorkouts = response.data;

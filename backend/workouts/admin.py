@@ -15,6 +15,4 @@ class UploadAdmin(admin.ModelAdmin):
     list_display = ('id', 'file')
 admin.site.register(Upload, UploadAdmin)
 
-admin.site.register(PushNotificationTicket)
-admin.site.register(PushNotificationReceipt)
-admin.site.register(PushNotificationToken)
+admin.site.register(Season)

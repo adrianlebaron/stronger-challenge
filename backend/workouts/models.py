@@ -13,7 +13,7 @@ class Workout(models.Model):
     duration = models.TimeField()
     exercise = models.CharField(max_length=100)
     picture = models.URLField(blank=True, null=True)
-    
+
     def get_share_url(self):
         hashedId = workouts.utils.h_encode(self.id)
         return "https://www.kosfitnessclub.com/share/" + hashedId
@@ -42,19 +42,10 @@ class WorkoutComment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-class PushNotificationToken(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    token = models.CharField(max_length=100, unique=True)
-    device_id = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
-class PushNotificationTicket(models.Model):
-    ticket_id = models.CharField(max_length=50)
-    push_token = models.ForeignKey(PushNotificationToken, on_delete=models.CASCADE)
-    body = models.TextField()
-    title = models.CharField(max_length=100)
-
-class PushNotificationReceipt(models.Model):
-    ticket = models.ForeignKey(PushNotificationTicket, on_delete=models.CASCADE)
-    error = models.CharField(max_length=50)
+class Season(models.Model):
+    active_season = models.BooleanField(default=True)
+    season_start = models.DateField()
+    season_end = models.DateField()
+    season_total_workouts = models.IntegerField()
+    month_goal = models.IntegerField()
+    week_goal = models.IntegerField()
