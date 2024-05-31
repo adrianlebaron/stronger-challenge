@@ -135,15 +135,6 @@ class Stripe(APIView):
         client_secret = intent.client_secret
         return Response(client_secret)
 
-@api_view(["POST",])
-@permission_classes([AllowAny])
-def ForgotPasswordView(request):
-
-    send_forgot_password_email(request.data['email'])
-
-    return Response()
-
-
 @permission_classes([AllowAny])
 class ResetPasswordView(APIView):
     def post(self, request):
