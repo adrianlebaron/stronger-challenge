@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 import math
 from authentication.permissions import IsAdminOrReadOnly
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # CHALLENGES for admins
 class AdminChallengeView(APIView):
@@ -76,7 +76,7 @@ class AdminChallengeSubmissions(APIView):
         response = {
             "challenges submissions": ChallengeSubmissionSerializer(challengeSubmissions, many=True).data,
         }
-        
+
         return Response(response)
 
 # CHALLENGE for users
@@ -88,23 +88,23 @@ def UserChallengeSubmissions(request):
     return Response(title_value_list)
 
 def get_user_challenge_submissions(user):
-    
+
     submissions = ChallengeSubmission.objects.filter(user=user).order_by('-id')
-    
+
     title_value_list = []
-    
+
     for submission in submissions:
         submissionObject = {}
         submissionObject['title'] = submission.challenge.title
         submissionObject['id'] = submission.id
-        
+
         if submission.amount is not None:
             # print(challenge.amount)
             submissionObject['value'] = submission.amount
         elif submission.time is not None:
             # print(challenge.time)
             submissionObject['value'] = submission.time
-        
+
         title_value_list.append(submissionObject)
 
     return title_value_list
@@ -137,10 +137,10 @@ class UserChallengeView(APIView):
                         seconds += time[i] * 60
                     else:
                         seconds += time[i]
-            challengeAttempt = ChallengeSubmission.objects.create(
+            ChallengeSubmission.objects.create(
                 user=request.user,
                 challenge=Challenge.objects.get(id=request.data['challenge']),
-                time=str(datetime.timedelta(seconds=seconds)),
+                time=str(timedelta(seconds=seconds)),
             )
             res = {
                 'Success': True,

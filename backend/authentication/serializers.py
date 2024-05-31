@@ -54,3 +54,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id','username', 'first_name', 'last_name', 'email', 'profile', 'date_joined')
+
+class PasswordResetTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PasswordResetToken
+        fields = ('token', 'expiration')
