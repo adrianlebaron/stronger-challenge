@@ -3,7 +3,7 @@ import threading
 from django.contrib.auth.models import User
 
 from authentication.models import PushNotificationToken
-from workouts.utils import send_push_notification
+from workouts.utils import h_decode, send_push_notification
 from .serializers import *
 from .models import *
 from django.core.files.base import ContentFile
@@ -163,7 +163,10 @@ class WorkoutView(APIView):
 class WorkoutDetails(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, pk=None):
+        if (pk):
+          return self.getSingleWorkout(pk, request)
+
         page = int(request.GET.get('page', 1))
         per_page = 10
 
