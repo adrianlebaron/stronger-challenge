@@ -258,11 +258,14 @@ class CategoryReaction(APIView):
             workout=workout).order_by('-created_at')
 
         # Agrupa las reacciones por emoji y persona que reaccionó
-        aggregated_reactions = reactions.values('user__username', 'reaction')
+        aggregated_reactions = reactions.values('user__username', 'user__first_name', 'user__last_name', 'reaction')
 
         response_data = []
         for entry in aggregated_reactions:
-            user = entry['user__username']
+            user = entry['user__first_name'] + " " + entry['user__last_name']
+            if not user.strip():
+                user = entry['user__username']
+
             emoji = entry['reaction']
             response_data.append({'user': user, 'emoji': emoji})
 

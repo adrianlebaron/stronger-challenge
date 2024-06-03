@@ -16,7 +16,7 @@ class Workout(models.Model):
 
     def get_share_url(self):
         hashedId = workouts.utils.h_encode(self.id)
-        return "https://www.kosfitnessclub.com/share/" + hashedId
+        return "https://www.kosfitnessclub.com/stronger-kos/share/" + hashedId
 
 class WorkoutReaction(models.Model):
     REACTION_CHOICES = (
