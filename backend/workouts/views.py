@@ -401,7 +401,7 @@ class Scores(APIView):
 
         start = (page - 1) * per_page
         end = page * per_page
-        allUsers = User.objects.annotate(score=Count('workout')).order_by('-score')
+        allUsers = User.objects.filter(profile__registration=True).annotate(score=Count('workout')).order_by('-score')
         total = allUsers.count()
         users = allUsers[start:end]
 
