@@ -3,7 +3,7 @@ import threading
 from django.contrib.auth.models import User
 
 from authentication.models import PushNotificationToken
-from workouts.utils import send_push_notification
+from workouts.utils import h_decode, send_push_notification
 from .serializers import *
 from .models import *
 from django.core.files.base import ContentFile
@@ -163,7 +163,10 @@ class WorkoutView(APIView):
 class WorkoutDetails(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, pk=None):
+        if (pk):
+          return self.getSingleWorkout(pk, request)
+
         page = int(request.GET.get('page', 1))
         per_page = 10
 
@@ -258,11 +261,14 @@ class CategoryReaction(APIView):
             workout=workout).order_by('-created_at')
 
         # Agrupa las reacciones por emoji y persona que reaccionó
-        aggregated_reactions = reactions.values('user__username', 'reaction')
+        aggregated_reactions = reactions.values('user__username', 'user__first_name', 'user__last_name', 'reaction')
 
         response_data = []
         for entry in aggregated_reactions:
-            user = entry['user__username']
+            user = entry['user__first_name'] + " " + entry['user__last_name']
+            if not user.strip():
+                user = entry['user__username']
+
             emoji = entry['reaction']
             response_data.append({'user': user, 'emoji': emoji})
 
@@ -395,7 +401,7 @@ class Scores(APIView):
 
         start = (page - 1) * per_page
         end = page * per_page
-        allUsers = User.objects.annotate(score=Count('workout')).order_by('-score')
+        allUsers = User.objects.filter(profile__registration=True).annotate(score=Count('workout')).order_by('-score')
         total = allUsers.count()
         users = allUsers[start:end]
 
