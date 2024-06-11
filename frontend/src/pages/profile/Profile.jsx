@@ -20,6 +20,7 @@ export default function Profile() {
     const [height, setHeight] = useState('');
     const [size, setSize] = useState();
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [registration, setRegistration] = useState('');
 
     const handleFormChange = () => {
         setIsFormModified(true);
@@ -73,6 +74,7 @@ export default function Profile() {
             setWeight(user?.profile.weight);
             setSize(user?.profile.shirt_size);
             setPhoneNumber(user?.profile.phone_number);
+            setRegistration(user?.profile.registration);
         }
     }, [user])
 
@@ -91,6 +93,8 @@ export default function Profile() {
                     <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant="h4">My profile</Typography>
                         <Typography variant="h5" color={'#D65DB1'}>{username}</Typography>
+                        <Typography variant="h5">Registration status:</Typography>
+                        <Typography variant="h5" color={'#D65DB1'}>{registration ? "Paid" : "Unpaid"}</Typography>
                     </Stack>
                     <FormControl variant="standard">
                         <InputLabel>Name:</InputLabel>
