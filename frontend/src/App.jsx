@@ -6,7 +6,6 @@ import Login from './pages/login/Login';
 import Shop from './pages/shop/Shop';
 import Profile from './pages/profile/Profile'
 import Score from './pages/score/Score'
-import Dashboard from './pages/dashboard/Dashboard'
 import Admin from './pages/admin/Admin'
 import { authStore } from './stores/auth_store/Store.tsx';
 import PrivateRoute from './components/private_route/PrivateRoute';
@@ -43,7 +42,6 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         {/* Private route */}
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/score" element={<Score />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin" element={<Admin/>} />
