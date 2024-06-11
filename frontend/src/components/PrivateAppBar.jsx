@@ -20,7 +20,6 @@ import Person3Icon from '@mui/icons-material/Person3';
 import HomeIcon from '@mui/icons-material/Home';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
-import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import TableChartIcon from '@mui/icons-material/TableChart';
 
 function PrivateAppBar() {
@@ -95,11 +94,6 @@ function PrivateAppBar() {
                                     </Button>
                                 </MenuItem>
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Button href='/dashbaord' variant='link'>
-                                        Dashboard
-                                    </Button>
-                                </MenuItem>
-                                <MenuItem onClick={handleCloseNavMenu}>
                                     <Button href='/profile' variant='link'>
                                         Profile
                                     </Button>
@@ -164,17 +158,6 @@ function PrivateAppBar() {
                                 endIcon={<ScoreboardIcon />}
                             >
                                 score
-                            </Button>
-                        </Box>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            <Button
-                                variant="link"
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white' }}
-                                href='/dashboard'
-                                endIcon={<DashboardCustomizeIcon />}
-                            >
-                                dashboard
                             </Button>
                         </Box>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
