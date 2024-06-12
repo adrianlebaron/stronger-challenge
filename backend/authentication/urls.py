@@ -4,7 +4,8 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/get-users/', AdminUsersView.as_view(), name="AdminUsersView"),
-    path('user/', UserView.as_view(), name='UserView'), # GET, PUT & POST
+    path('user/', UserView.as_view(), name='UserView'),
+    path('signup/', SignUp.as_view(), name='SignUp'),
     path('user/delete-account/', DeleteAccount.as_view(), name="DeleteAccount"),
     path('stripe/', Stripe.as_view(), name='stripe'),
     path('check-username/', CheckUsernameView.as_view(), name="CheckUsernameView"),

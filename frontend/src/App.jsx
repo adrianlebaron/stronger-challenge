@@ -7,6 +7,7 @@ import Shop from './pages/shop/Shop';
 import Profile from './pages/profile/Profile'
 import Score from './pages/score/Score'
 import Admin from './pages/admin/Admin'
+import SignUp from './pages/signup/SignUp'
 import { authStore } from './stores/auth_store/Store.tsx';
 import PrivateRoute from './components/private_route/PrivateRoute';
 import { getUser } from './services/UserApiRequest';
@@ -40,6 +41,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/signup" element={<SignUp/> } />
         {/* Private route */}
         <Route element={<PrivateRoute />}>
           <Route path="/score" element={<Score />} />

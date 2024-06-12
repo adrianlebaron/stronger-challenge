@@ -72,7 +72,8 @@ class UserView(APIView):
 
         return Response(data)
 
-    # signup function
+class SignUp(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         userInfo = request.data
         data = {}
