@@ -13,6 +13,7 @@ import PrivateRoute from './components/private_route/PrivateRoute';
 import { getUser } from './services/UserApiRequest';
 import PrivateAppBar from './components/PrivateAppBar';
 import PublicAppBar from './components/PublicAppBar';
+import AdminRoute from './components/admin_route/AdminRoute.jsx';
 
 function ErrorBoundary() {
   // Uncaught ReferenceError: path is not defined
@@ -41,12 +42,14 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/signup" element={<SignUp/> } />
+        <Route path="/signup" element={<SignUp />} />
         {/* Private route */}
         <Route element={<PrivateRoute />}>
           <Route path="/score" element={<Score />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/admin" element={<Admin/>} />
+        </Route>
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>
