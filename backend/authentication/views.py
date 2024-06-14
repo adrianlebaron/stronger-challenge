@@ -74,6 +74,7 @@ class UserView(APIView):
 
 class SignUp(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         userInfo = request.data
         data = {}
@@ -89,22 +90,10 @@ class SignUp(APIView):
 
         user.first_name = userInfo['first_name']
         user.last_name = userInfo['last_name']
-        height = (int(userInfo['height_ft']) * 12) + int(userInfo['height_in'])
         user.profile.age = userInfo['age']
-        user.profile.height = height
         user.profile.weight = userInfo['weight']
         user.profile.shirt_size = userInfo['shirt_size']
         user.profile.phone_number = userInfo['phone_number']
-
-        try:
-            device = userInfo['device']
-        except:
-            device = None
-
-        if device and device == "mobile":
-            user.profile.registration = False
-        else:
-            user.profile.registration = True
 
         user.save()
         token = Token.objects.get(user=user)

@@ -35,7 +35,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (token) {
-            navigate("/dashboard", { replace: true });
+            navigate("/profile", { replace: true });
         }
     }, [token, navigate]);
 
