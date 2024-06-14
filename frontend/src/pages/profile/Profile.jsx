@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import HeightInput from "../../components/HeightInput";
 import { authStore } from "../../stores/auth_store/Store";
-import { Container, Box, Button, FormControl, NativeSelect, Typography, Input, InputLabel, Stack } from "@mui/material";
+import { Container, Box, Button, FormControl, NativeSelect, Typography, Input, InputLabel, Stack, Link } from "@mui/material";
 import { toast } from 'react-hot-toast';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -92,9 +92,27 @@ export default function Profile() {
                 <Stack spacing={2} width={'90%'}>
                     <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant="h4">My profile</Typography>
-                        <Typography variant="h5" color={'#D65DB1'}>{username}</Typography>
-                        <Typography variant="h5">Registration status:</Typography>
-                        <Typography variant="h5" color={'#D65DB1'}>{registration ? "Paid" : "Unpaid"}</Typography>
+                        <Typography variant="h5">username: {username}</Typography>
+                        <Typography variant="h5">Registration status: {registration ? <div style={{ color: 'green' }}>Paid</div> : <div style={{ color: 'red' }}>Unpaid</div>}
+                        </Typography>
+                        <Typography variant="overline">
+                            {
+                                (!registration)
+                                    ? <div>
+                                        Remember to send your payment screenshot with your full name to be registered as PAID to enter the challenge. For this, contact
+                                        <Link
+                                            href="https://wa.me/6361110307?text=Here,%20is%20my%20payment%20for%20KOS%20"
+                                            variant="body2"
+                                            target="_blank"
+                                        >
+                                            : Mahalia Belmont +52 636 111 0307
+                                        </Link>
+                                        <div>After sending your payment screenshot, it will take a short period of time to be marked as paid</div>
+                                    </div>
+                                    : <div></div>
+                            }
+
+                        </Typography>
                     </Stack>
                     <FormControl variant="standard">
                         <InputLabel>Name:</InputLabel>
