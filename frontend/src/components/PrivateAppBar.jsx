@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
 // Local components
 import theme from '../theme/theme'
@@ -24,11 +24,12 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 
 function PrivateAppBar() {
     const [anchorElNav, setAnchorElNav] = useState(null);
-    const {setToken, setUser} = authStore(store=>store)
+    const { setToken, setUser } = authStore(store => store)
+    const { user } = authStore((state) => state.user);
 
     const handleSignOut = () => {
         setToken(""),
-        setUser("")
+            setUser("")
     };
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -36,6 +37,26 @@ function PrivateAppBar() {
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
+    };
+
+    const adminLinks = () => {
+        if (user) {
+            if (user?.profile?.roles === "ADMIN") {
+                return (
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        <Button
+                            variant="link"
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, color: 'white' }}
+                            href='/admin'
+                            endIcon={<TableChartIcon />}
+                        >
+                            admin
+                        </Button>
+                    </Box>
+                );
+            }
+        }
     };
 
     return (
@@ -94,13 +115,13 @@ function PrivateAppBar() {
                                     </Button>
                                 </MenuItem>
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Button href='/profile' variant='link'>
-                                        Profile
+                                    <Button href='/admin' variant='link'>
+                                        Admin
                                     </Button>
                                 </MenuItem>
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Button href='/admin' variant='link'>
-                                        Admin
+                                    <Button href='/profile' variant='link'>
+                                        Profile
                                     </Button>
                                 </MenuItem>
                             </Menu>
@@ -160,6 +181,7 @@ function PrivateAppBar() {
                                 score
                             </Button>
                         </Box>
+                        {adminLinks()}
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             <Button
                                 variant="link"
@@ -171,23 +193,11 @@ function PrivateAppBar() {
                                 profile
                             </Button>
                         </Box>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            <Button
-                                variant="link"
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white' }}
-                                href='/admin'
-                                endIcon={<TableChartIcon />}
-                            >
-                                admin
-                            </Button>
-                        </Box>
-
                         <Button
                             onClick={handleSignOut}
                             variant='outlined'
                             sx={{ my: 2, color: 'white' }}
-                            style={{borderColor: 'white'}}
+                            style={{ borderColor: 'white' }}
                         >
                             logout
                         </Button>
