@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
 import theme from '../theme/theme'
 import koslogo from '../assets/koslogo.svg'
@@ -79,6 +79,11 @@ function PublicAppBar() {
                                         sign up
                                     </Button>
                                 </MenuItem>
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Button href='/login' variant='link'>
+                                        login
+                                    </Button>
+                                </MenuItem>
                             </Menu>
                         </Box>
                         <Typography
@@ -102,6 +107,25 @@ function PublicAppBar() {
 
                         {/* DESKTOP NAVBAR */}
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                component="a"
+                                href="#app-bar-with-responsive-menu"
+                                sx={{
+                                    mr: 2,
+                                    display: { xs: 'none', md: 'flex' },
+                                    fontFamily: 'monospace',
+                                    fontWeight: 700,
+                                    letterSpacing: '.3rem',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
+                                }}
+                            >
+                                <img src={koslogo} width={100}></img>
+                            </Typography>
+                        </Box>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             <Button
                                 variant="link"
                                 onClick={handleCloseNavMenu}
@@ -112,7 +136,6 @@ function PublicAppBar() {
                                 HOME
                             </Button>
                         </Box>
-
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             <Button
                                 variant="link"
@@ -135,14 +158,16 @@ function PublicAppBar() {
                                 sign up
                             </Button>
                         </Box>
-                        <Button
-                            href='/login'
-                            variant='outlined'
-                            sx={{ my: 2, color: 'white' }}
-                            style={{borderColor: 'white'}}
-                        >
-                            login
-                        </Button>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            <Button
+                                href='/login'
+                                variant='outlined'
+                                sx={{ my: 2, color: 'white' }}
+                                style={{ borderColor: 'white' }}
+                            >
+                                login
+                            </Button>
+                        </Box>
                     </Toolbar>
                 </Container>
             </AppBar>

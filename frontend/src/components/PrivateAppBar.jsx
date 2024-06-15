@@ -124,6 +124,11 @@ function PrivateAppBar() {
                                         Profile
                                     </Button>
                                 </MenuItem>
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Button onClick={handleSignOut} variant='link'>
+                                        logout
+                                    </Button>
+                                </MenuItem>
                             </Menu>
                         </Box>
                         <Typography
@@ -146,6 +151,25 @@ function PrivateAppBar() {
                         </Typography>
 
                         {/* DESKTOP NAVBAR */}
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                component="a"
+                                href="#app-bar-with-responsive-menu"
+                                sx={{
+                                    mr: 2,
+                                    display: { xs: 'none', md: 'flex' },
+                                    fontFamily: 'monospace',
+                                    fontWeight: 700,
+                                    letterSpacing: '.3rem',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
+                                }}
+                            >
+                                <img src={koslogo} width={100}></img>
+                            </Typography>
+                        </Box>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             <Button
                                 variant="link"
@@ -193,14 +217,16 @@ function PrivateAppBar() {
                                 profile
                             </Button>
                         </Box>
-                        <Button
-                            onClick={handleSignOut}
-                            variant='outlined'
-                            sx={{ my: 2, color: 'white' }}
-                            style={{ borderColor: 'white' }}
-                        >
-                            logout
-                        </Button>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            <Button
+                                onClick={handleSignOut}
+                                variant='outlined'
+                                sx={{ my: 2, color: 'white' }}
+                                style={{ borderColor: 'white' }}
+                            >
+                                logout
+                            </Button>
+                        </Box>
                     </Toolbar>
                 </Container>
             </AppBar>
