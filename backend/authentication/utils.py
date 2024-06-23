@@ -16,7 +16,7 @@ import string
 from django.utils.crypto import get_random_string
 
 stripe.api_key = 'sk_test_51GrtUoHuoQnP408hRCNMQHsnv6xGhKddTNKoSlpC3apsOarcLs23GnYmrqregvBNVaU7bU1SJuw8BRuFhRuX4f1U001f9qGXda'
-sendgrid_api_key = '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'
+sendgrid_api_key = ''
 
 def create_stripe_payment(amount):
     intent = stripe.PaymentIntent.create(

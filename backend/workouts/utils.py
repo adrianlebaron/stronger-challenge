@@ -25,7 +25,7 @@ from hashids import Hashids
 from collections import Counter
 
 stripe.api_key = 'sk_test_51GrtUoHuoQnP408hRCNMQHsnv6xGhKddTNKoSlpC3apsOarcLs23GnYmrqregvBNVaU7bU1SJuw8BRuFhRuX4f1U001f9qGXda'
-# sendgrid_api_key = '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'
+# sendgrid_api_key = ''
 
 hashids = Hashids(min_length=8, alphabet='abcdefghijklmnopqrstuvwxyz')
 
